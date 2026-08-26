@@ -15,6 +15,16 @@
     "home": { "type": "string", "format": "uri" },
     "documentation": { "type": "string", "format": "uri" },
     "icon": { "type": "string", "format": "uri" },
+    "ui": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["featured", "configurationMode", "sections"],
+      "properties": {
+        "featured": { "type": "boolean" },
+        "configurationMode": { "enum": ["schema", "yaml", "schema-and-yaml"] },
+        "sections": { "type": "array", "items": { "type": "string" }, "uniqueItems": true }
+      }
+    },
     "supportTier": { "enum": ["astronomer", "upstream", "experimental"] },
     "defaultEnabled": { "type": "boolean" },
     "privileged": { "type": "boolean" },
@@ -60,4 +70,3 @@
     }
   }
 }
-

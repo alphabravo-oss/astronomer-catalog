@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "name": "astronomer-catalog",
+  "catalog": "catalog.json",
+  "schemas": [
+    "schemas/catalog-index-v1.schema.json",
+    "schemas/catalog-entry-v1.schema.json"
+  ],
+  "ociRepository": "ghcr.io/alphabravo-oss/astronomer-application-catalog",
+  "staticMirrorPath": "application-catalog",
+  "releaseVersioning": "semver",
+  "signing": {
+    "provider": "sigstore-keyless",
+    "identity": ".github/workflows/release.yaml@refs/tags/v*",
+    "requiredForStable": true
+  }
+}

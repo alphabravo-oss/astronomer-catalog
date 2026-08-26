@@ -1,0 +1,45 @@
+name: Publish immutable catalog
+
+on:
+  push:
+    tags: ["v*.*.*"]
+
+permissions:
+  contents: read
+  id-token: write
+  packages: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - run: ./scripts/validate.sh
+      - name: Install ORAS
+        uses: oras-project/setup-oras@v1
+      - name: Install cosign
+        uses: sigstore/cosign-installer@v3
+      - name: Log in to GHCR
+        run: echo "${{ github.token }}" | oras login ghcr.io -u "${{ github.actor }}" --password-stdin
+      - name: Publish and sign
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          set -eu
+          jq -S -c . catalog.json > catalog.canonical.json
+          repository="ghcr.io/alphabravo-oss/astronomer-application-catalog"
+          oras push --format json "${repository}:${TAG}" \
+            --artifact-type application/vnd.astronomer.application-catalog.v1+json \
+            catalog.canonical.json:application/vnd.astronomer.application-catalog.v1+json \
+            > push.json
+          digest="$(jq -er '.digest | select(test("^sha256:[a-f0-9]{64}$"))' push.json)"
+          cosign sign --yes "${repository}@${digest}"
+          sha256sum catalog.canonical.json > SHA256SUMS
+      - uses: actions/upload-artifact@v4
+        with:
+          name: application-catalog-${{ github.ref_name }}
+          path: |
+            catalog.canonical.json
+            SHA256SUMS
+            push.json

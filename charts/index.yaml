@@ -1,0 +1,27 @@
+apiVersion: v1
+entries:
+  constellation:
+  - apiVersion: v2
+    appVersion: 0.2.0
+    created: "2026-08-26T02:29:38.61421994Z"
+    description: Constellation — Container & Kubernetes Security Platform
+    digest: ea0d90ca7a7f7bb6d2ffaa466f925b96d2cae5b3d95728603d17ece12d72ee46
+    home: https://github.com/alphabravo-oss/constellation
+    icon: https://raw.githubusercontent.com/alphabravo-oss/constellation/main/frontend/public/icon.svg
+    keywords:
+    - security
+    - vulnerability-management
+    - admission-control
+    - runtime-security
+    - kubernetes
+    kubeVersion: '>=1.27.0-0'
+    maintainers:
+    - name: Alpha Bravo Security
+    name: constellation
+    sources:
+    - https://github.com/alphabravo-oss/constellation
+    type: application
+    urls:
+    - https://raw.githubusercontent.com/alphabravo-oss/astronomer-catalog/main/charts/constellation-0.2.0.tgz
+    version: 0.2.0
+generated: "2026-08-26T02:29:38.607867225Z"

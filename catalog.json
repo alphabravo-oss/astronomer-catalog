@@ -9,6 +9,7 @@
     "channel": "development"
   },
   "repositories": [
+    { "name": "astronomer-first-party", "type": "helm", "url": "https://raw.githubusercontent.com/alphabravo-oss/astronomer-catalog/main/charts" },
     { "name": "prometheus-community", "type": "helm", "url": "https://prometheus-community.github.io/helm-charts" },
     { "name": "metrics-server", "type": "helm", "url": "https://kubernetes-sigs.github.io/metrics-server/" },
     { "name": "grafana", "type": "helm", "url": "https://grafana.github.io/helm-charts" },
@@ -27,6 +28,26 @@
     { "name": "cnpg", "type": "helm", "url": "https://cloudnative-pg.github.io/charts" }
   ],
   "applications": [
+    {
+      "slug": "constellation",
+      "name": "Constellation",
+      "summary": "Astronomer first-party Kubernetes and container security platform.",
+      "description": "Discover workloads, analyze images with Trivy and Grype, generate SBOM inventory with Syft, visualize network flows, enforce admission and runtime policy, and operate compliance programs from one highly available control plane.",
+      "category": "security",
+      "keywords": ["security", "runtime", "admission", "trivy", "grype", "syft", "sbom", "compliance", "network"],
+      "home": "https://github.com/alphabravo-oss/constellation",
+      "documentation": "https://github.com/alphabravo-oss/constellation/tree/main/docs",
+      "icon": "https://raw.githubusercontent.com/alphabravo-oss/constellation/main/frontend/public/icon.svg",
+      "ui": { "featured": true, "configurationMode": "schema-and-yaml", "sections": ["high-availability", "scanning", "runtime", "admission", "ingress", "postgres", "tls", "bootstrap"] },
+      "supportTier": "astronomer",
+      "defaultEnabled": false,
+      "privileged": true,
+      "artifact": { "type": "helm", "repository": "astronomer-first-party", "chart": "constellation", "version": "0.2.0" },
+      "compatibility": { "kubernetes": ">=1.27.0 <1.36.0" },
+      "resources": { "profile": "large", "notes": "Runtime agents run on every node; scanners and PostgreSQL should be sized for image volume and retention." },
+      "storage": { "required": true, "recommended": "20Gi database plus 8Gi scanner cache", "thinProvisioning": true },
+      "lifecycle": { "install": true, "upgrade": true, "rollback": true, "uninstall": true }
+    },
     {
       "slug": "kube-state-metrics",
       "name": "Kube State Metrics",

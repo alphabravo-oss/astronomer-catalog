@@ -268,7 +268,7 @@
       "home": "https://open-policy-agent.github.io/gatekeeper/website/",
       "documentation": "https://open-policy-agent.github.io/gatekeeper/website/docs/install/",
       "icon": "https://cdn.simpleicons.org/openpolicyagent/7D9199",
-      "ui": { "featured": false, "configurationMode": "schema-and-yaml", "sections": ["admission", "audit", "mutation", "resources"] },
+      "ui": { "featured": true, "configurationMode": "schema-and-yaml", "sections": ["admission", "audit", "mutation", "resources"] },
       "supportTier": "upstream",
       "defaultEnabled": false,
       "privileged": true,

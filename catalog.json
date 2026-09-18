@@ -3,6 +3,8 @@
   "apiVersion": "catalog.astronomer.dev/v1alpha1",
   "kind": "ApplicationCatalog",
   "metadata": {
+    "schemaVersion": 1,
+    "minimumReaderVersion": 1,
     "name": "astronomer",
     "displayName": "Astronomer Catalog",
     "description": "Upstream applications curated for deployment through Astronomer and Flux.",

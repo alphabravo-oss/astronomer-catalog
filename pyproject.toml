@@ -9,7 +9,7 @@ dependencies = []
 build = ["jsonschema[format]==4.26.0", "PyYAML==6.0.3", "referencing==0.37.0"]
 test = [{ include-group = "build" }]
 lint = ["ruff==0.17.0"]
-type = [{ include-group = "build" }, "mypy==2.4.0", "types-PyYAML==6.0.12.20260906"]
+type = [{ include-group = "build" }, "mypy==2.4.0", "types-PyYAML==6.0.12.20260906", "types-jsonschema==4.26.0.20261006"]
 audit = ["pip-audit==2.10.1", "cyclonedx-bom==7.5.0"]
 build-backend = ["setuptools==84.0.0", "Cython==3.3.0"]
 

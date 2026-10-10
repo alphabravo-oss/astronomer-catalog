@@ -2,8 +2,8 @@
 
 The selected runtime is Python 3.15.0 with uv 0.13.0. The repository manifest
 selects build/test, Ruff, Mypy, pip-audit, CycloneDX and source-build-backend groups.
-`uv.lock` is the actual resolved 62-record graph: one virtual project and 61
-exact distribution versions with all 384 upstream distribution hashes. The
+`uv.lock` is the actual resolved 63-record graph: one virtual project and 62
+exact distribution versions with all 386 upstream distribution hashes. The
 hashed requirements export has the same graph; its machine-specific command
 header is omitted from the committed reference. `verify_export.py` ignores only
 the known two-line uv command header and compares every remaining byte.
@@ -18,7 +18,7 @@ check requires every installed package/version to equal the full lock, the pure
 SafeLoader and the JSON Schema URI format capability.
 
 The executed Plan032 local environment is x86_64 Linux using the selected
-standalone Python 3.15.0 distribution. Its 61-version installation is already
+standalone Python 3.15.0 distribution. Its 62-version installation is already
 qualified against the retained lock. The aarch64 Linux interpreter/uv artifacts
 have static primary size/hash metadata; no aarch64 installation or runtime test
 is claimed. The workflow selects x86_64 `ubuntu-24.04`, Python 3.15.0 and uv 0.13.0.
@@ -43,11 +43,14 @@ Routine catalog validation remains offline. Dependency auditing queries the
 advisory service and fails if a dependency cannot be collected or has an
 unaccepted finding. The SBOM and audit must cover exactly the complete installed
 version graph before release evidence is emitted; no generic dependency exception
-or vulnerability-ignore flag is added. The strict Mypy/Ruff gates are source
-requirements; their actual results on this proposed composition are still pending.
-In particular, the selected jsonschema distribution lacks a py.typed marker,
-so the Mypy import boundary needs actual measurement and a precise dependency
-or typed-adapter decision if it fails; no broad missing-import ignore is authorized.
+or vulnerability-ignore flag is added. The selected local composition passed
+Ruff, Mypy, hashed-export comparison, dependency auditing and tooling SBOM
+validation. The locked `types-jsonschema` distribution supplies the precise
+Mypy import boundary for jsonschema; no broad missing-import ignore is used.
+Retained Plan032 evidence separately records 30 catalog tests and five owned
+TLS tests on source `4e6d27a`, followed by nine tooling tests and the six static
+gates on `afd3af6`. The latter source changes only the tooling cardinality
+assertion from 61 to 62. These results do not qualify GitHub publication or ARM.
 
 Primary references: [uv locked synchronization](https://docs.astral.sh/uv/concepts/projects/sync/),
 [uv dependency groups](https://docs.astral.sh/uv/concepts/projects/dependencies/#dependency-groups),

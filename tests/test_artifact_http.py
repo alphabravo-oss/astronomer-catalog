@@ -71,6 +71,32 @@ class ArtifactHTTPTest(unittest.TestCase):
                 HTTP.fetch_public_https("https://public.invalid/chart", 1024)
             connection.assert_not_called()
 
+    def test_dns_socket_shapes_and_scopes_validate_before_contact(self) -> None:
+        invalid = [
+            (socket.AF_INET6, ("2001:4860:4860::8888", 443)),
+            (socket.AF_INET6, ("2001:4860:4860::8888", 443, 0, 1)),
+            (socket.AF_INET, ("8.8.8.8", 443, 0, 0)),
+            (socket.AF_INET, (123, 443)),
+        ]
+        for family, address in invalid:
+            answers = [(family, socket.SOCK_STREAM, socket.IPPROTO_TCP, "", address)]
+            with self.subTest(family=family, address=address):
+                with mock.patch.object(socket, "getaddrinfo", return_value=answers):
+                    with mock.patch.object(HTTP, "PinnedHTTPSConnection") as connection:
+                        with self.assertRaisesRegex(ValueError, "DNS resolution failed"):
+                            HTTP.fetch_public_https("https://public.invalid/chart", 1024)
+                        connection.assert_not_called()
+        answers = [
+            (socket.AF_INET, socket.SOCK_STREAM, socket.IPPROTO_TCP, "", ("8.8.8.8", 443)),
+            (socket.AF_INET6, socket.SOCK_STREAM, socket.IPPROTO_TCP, "",
+             ("2001:4860:4860::8888", 443, 0, 0)),
+        ]
+        with mock.patch.object(socket, "getaddrinfo", return_value=answers):
+            self.assertEqual(
+                HTTP.public_addresses("public.invalid", 443, time.monotonic() + 1),
+                [(socket.AF_INET, "8.8.8.8"), (socket.AF_INET6, "2001:4860:4860::8888")],
+            )
+
     def test_dns_timeout_joins_only_its_owned_child(self) -> None:
         children: list[int] = []
         fork = os.fork

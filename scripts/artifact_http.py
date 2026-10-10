@@ -72,21 +72,23 @@ def public_addresses(host: str, port: int, deadline: float) -> list[tuple[int, s
             records = socket.getaddrinfo(host, port, type=socket.SOCK_STREAM)
             if not 0 < len(records) <= MAX_ADDRESSES:
                 raise ValueError
-            addresses = []
-            for family, kind, protocol, _, address in records:
+            dns_rows: list[list[int | str]] = []
+            for family, kind, protocol, _, socket_address in records:
                 if (family not in (socket.AF_INET, socket.AF_INET6)
                         or kind != socket.SOCK_STREAM or protocol not in (0, socket.IPPROTO_TCP)
-                        or (family == socket.AF_INET6 and address[3] != 0)):
+                        or len(socket_address) != (2 if family == socket.AF_INET else 4)
+                        or not isinstance(socket_address[0], str)
+                        or (family == socket.AF_INET6 and socket_address[-1] != 0)):
                     raise ValueError
-                addresses.append([family, address[0]])
-            payload = json.dumps(addresses).encode("ascii")
-            if len(payload) > MAX_DNS_BYTES:
+                dns_rows.append([family, socket_address[0]])
+            child_payload = json.dumps(dns_rows).encode("ascii")
+            if len(child_payload) > MAX_DNS_BYTES:
                 raise ValueError
         except BaseException:
-            payload = b"null"
+            child_payload = b"null"
         try:
-            while payload:
-                payload = payload[os.write(write_fd, payload):]
+            while child_payload:
+                child_payload = child_payload[os.write(write_fd, child_payload):]
         finally:
             os.close(write_fd)
             os._exit(0)
@@ -97,33 +99,34 @@ def public_addresses(host: str, port: int, deadline: float) -> list[tuple[int, s
         # The unreaped child remains owned even if it exits before pidfd_open.
         pid_fd = os.pidfd_open(child)
         dns_deadline = min(deadline, time.monotonic() + DNS_SECONDS)
-        payload = bytearray()
+        response_bytes = bytearray()
         while True:
             readable, _, _ = select.select([read_fd], [], [], remaining(dns_deadline))
             if not readable:
                 raise ValueError("artifact DNS deadline exceeded")
-            chunk = os.read(read_fd, min(4096, MAX_DNS_BYTES + 1 - len(payload)))
+            chunk = os.read(read_fd, min(4096, MAX_DNS_BYTES + 1 - len(response_bytes)))
             if not chunk:
                 break
-            payload.extend(chunk)
-            if len(payload) > MAX_DNS_BYTES:
+            response_bytes.extend(chunk)
+            if len(response_bytes) > MAX_DNS_BYTES:
                 raise ValueError("artifact DNS response exceeds its bound")
-        rows = json.loads(payload)
+        rows = json.loads(response_bytes)
         if not isinstance(rows, list) or not 0 < len(rows) <= MAX_ADDRESSES:
             raise ValueError("artifact DNS resolution failed")
-        addresses = []
+        addresses: list[tuple[int, str]] = []
         for row in rows:
             if (not isinstance(row, list) or len(row) != 2 or type(row[0]) is not int
                     or row[0] not in (socket.AF_INET, socket.AF_INET6)
                     or not isinstance(row[1], str)):
                 raise ValueError("artifact DNS response is invalid")
             try:
-                address = ipaddress.ip_address(row[1])
+                numeric_address = ipaddress.ip_address(row[1])
             except ValueError:
                 raise ValueError("artifact DNS response is invalid") from None
-            if not address.is_global or address.version != (4 if row[0] == socket.AF_INET else 6):
+            if (not numeric_address.is_global
+                    or numeric_address.version != (4 if row[0] == socket.AF_INET else 6)):
                 raise ValueError("artifact destination resolves to a non-public address")
-            candidate = (row[0], str(address))
+            candidate = (row[0], str(numeric_address))
             if candidate not in addresses:
                 addresses.append(candidate)
         return addresses
@@ -156,6 +159,9 @@ def public_addresses(host: str, port: int, deadline: float) -> list[tuple[int, s
 
 
 class PinnedHTTPSConnection(http.client.HTTPSConnection):
+    # Selected Python 3.15 HTTPSConnection.__init__ stores its verified context here.
+    _context: ssl.SSLContext
+
     def __init__(self, host: str, port: int, addresses: list[tuple[int, str]], deadline: float):
         # Canonical HTTPSConnection context verifies both the certificate and host.
         super().__init__(host, port, timeout=remaining(deadline), max_response_headers=32)

@@ -94,7 +94,7 @@ class ToolchainContractTest(unittest.TestCase):
                 value["dependencies"].append(value["dependencies"][0])
             else:
                 value["dependencies"][0]["vulns"] = [{"id": "synthetic-unaccepted"}]
-            with self.subTest(kind=kind), self.assertRaises(ValueError):
+            with self.subTest(contract="audit", kind=kind), self.assertRaises(ValueError):
                 verify_audit(tools, value)
         for kind in ("missing", "version", "duplicate", "format"):
             value = copy.deepcopy(sbom)
@@ -106,7 +106,7 @@ class ToolchainContractTest(unittest.TestCase):
                 value["components"].append(value["components"][0])
             else:
                 value["specVersion"] = "1.5"
-            with self.subTest(kind=kind), self.assertRaises(ValueError):
+            with self.subTest(contract="sbom", kind=kind), self.assertRaises(ValueError):
                 verify_sbom(tools, value)
 
 

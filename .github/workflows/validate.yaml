@@ -8,16 +8,48 @@ on:
 permissions:
   contents: read
 
+env:
+  PYTHONDONTWRITEBYTECODE: "1"
+  UV_PYTHON_DOWNLOADS: never
+
 jobs:
   validate:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          python-version: "3.12"
-          cache: pip
-      - name: Install validation dependencies
-        run: python -m pip install --requirement requirements-dev.txt
-      - name: Validate catalog
-        run: ./scripts/validate.sh
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.15.0"
+      - uses: astral-sh/setup-uv@bec219d24cd3e171d82865faccec33120bb574f4 # v10.1.0
+        with:
+          version: "0.13.0"
+          checksum: "1468ebd5a5541121837c5a2817b9972ba6090fa6caa3d142620850a47fb75154"
+          enable-cache: false
+      - name: Synchronize reviewed locked tools
+        run: python scripts/sync_tools.py --python "$(command -v python)"
+      - name: Verify the installed full graph
+        run: .venv/bin/python scripts/verify_tools.py --output qualification/installed-tools.json
+      - name: Validate catalog and unchanged regression suite
+        run: PATH="$PWD/.venv/bin:$PATH" ./scripts/validate.sh
+      - name: Ruff
+        run: .venv/bin/ruff check scripts tests
+      - name: Mypy
+        run: .venv/bin/mypy --config-file pyproject.toml
+      - name: Verify the retained hashed export
+        run: |
+          uv --no-config export --locked --offline --all-groups --no-default-groups --no-emit-project --format requirements-txt --output-file qualification/requirements-all.txt --python "$(command -v python)"
+          .venv/bin/python scripts/verify_export.py --reference requirements-all.txt --candidate qualification/requirements-all.txt
+      - name: Audit every locked tool version
+        run: .venv/bin/python -m pip_audit --strict --disable-pip --require-hashes --requirement qualification/requirements-all.txt --format json --output qualification/pip-audit.json --timeout 15 --progress-spinner off
+      - name: Emit the tooling environment SBOM
+        run: .venv/bin/python -m cyclonedx_py environment .venv/bin/python --pyproject pyproject.toml --output-reproducible --validate --spec-version 1.6 --output-format JSON --output-file qualification/tooling-sbom.cdx.json
+      - name: Retain qualification outputs
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: catalog-tooling-qualification
+          path: qualification/
+          if-no-files-found: error

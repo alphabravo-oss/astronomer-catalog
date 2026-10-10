@@ -12,12 +12,12 @@ import re
 import socket
 import sys
 import urllib.parse
-import urllib.request
 from typing import Any
 
 import yaml
 
 from validate_schema import ROOT, load_json
+from artifact_http import fetch_public_https
 
 
 LOCK_PATH = ROOT / "artifact-lock.json"
@@ -53,25 +53,14 @@ def validate_public_https(url: str, *, allow_transient_signature: bool = False) 
 
 
 def fetch(url: str, maximum: int) -> tuple[bytes, str]:
-    validate_public_https(url)
-    request = urllib.request.Request(url, headers={"User-Agent": "astronomer-catalog-builder/1"})
-    with urllib.request.urlopen(request, timeout=45) as response:
-        final_url = response.geturl()
-        validate_public_https(final_url, allow_transient_signature=True)
-        length = response.headers.get("Content-Length")
-        if length and int(length) > maximum:
-            raise ValueError(f"artifact exceeds {maximum} bytes: {final_url}")
-        content = response.read(maximum + 1)
-    if len(content) > maximum:
-        raise ValueError(f"artifact exceeds {maximum} bytes: {final_url}")
-    return content, final_url
+    return fetch_public_https(url, maximum)
 
 
 def chart_url(index_url: str, index: dict, chart: str, version: str) -> str:
     versions = index.get("entries", {}).get(chart, [])
     match = next((item for item in versions if str(item.get("version")) == version), None)
     if not match:
-        raise ValueError(f"chart {chart} version {version} is absent from {index_url}")
+        raise ValueError(f"chart {chart} version {version} is absent from the Helm index")
     urls = match.get("urls") or []
     if not urls:
         raise ValueError(f"chart {chart} version {version} has no archive URL")
@@ -110,7 +99,7 @@ def resolve() -> dict:
             index_content, resolved_index_url = fetch(requested_index_url, MAX_INDEX_BYTES)
             parsed = yaml.safe_load(index_content)
             if not isinstance(parsed, dict):
-                raise ValueError(f"Helm index is not an object: {resolved_index_url}")
+                raise ValueError("Helm index is not an object")
             indexes[repository_url] = (parsed, resolved_index_url)
         index, resolved_index_url = indexes[repository_url]
         requested_chart_url = chart_url(resolved_index_url, index, chart, version)

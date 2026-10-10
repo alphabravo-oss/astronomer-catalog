@@ -41,7 +41,7 @@ class ToolchainContractTest(unittest.TestCase):
 
         lock = tomllib.loads((ROOT / "uv.lock").read_text())
         names = locked_names(lock)
-        self.assertEqual(len(names), 61)
+        self.assertEqual(len(names), 62)
         backend, complete = commands("selected-uv", "selected-python", names)
         self.assertIn("--no-build", backend)
         self.assertIn("--only-group", backend)

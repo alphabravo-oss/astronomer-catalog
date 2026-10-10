@@ -11,9 +11,8 @@ import shutil
 import sys
 from typing import Any
 
-from validate_schema import ROOT, load_json, validate_catalog, validate_revocations
 from resolve_artifacts import validate_lock
-
+from validate_schema import ROOT, load_json, validate_catalog, validate_revocations
 
 GENERATED = ROOT / "generated"
 

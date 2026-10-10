@@ -19,7 +19,7 @@ SPEC.loader.exec_module(RESOLVE)
 
 
 class RecordedSocket:
-    def __init__(self, owner: "ArtifactTransportBoundaryTest", *args: object, **kwargs: object) -> None:
+    def __init__(self, owner: ArtifactTransportBoundaryTest, *args: object, **kwargs: object) -> None:
         self.owner = owner
         self.request = b""
 

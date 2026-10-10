@@ -13,7 +13,6 @@ import tomllib
 
 import yaml
 from jsonschema import FormatChecker
-
 from sync_tools import ROOT, locked_names, package_name
 
 

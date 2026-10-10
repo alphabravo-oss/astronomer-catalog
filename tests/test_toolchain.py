@@ -10,10 +10,10 @@ import unittest
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
-from sync_tools import commands, locked_names, package_name, synchronize  # noqa: E402
-from verify_tools import verify_versions  # noqa: E402
 from release_evidence import verify_audit, verify_sbom  # noqa: E402
+from sync_tools import commands, locked_names, package_name, synchronize  # noqa: E402
 from verify_export import verify_export  # noqa: E402
+from verify_tools import verify_versions  # noqa: E402
 
 
 class ToolchainContractTest(unittest.TestCase):

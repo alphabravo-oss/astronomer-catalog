@@ -15,10 +15,8 @@ import urllib.parse
 from typing import Any
 
 import yaml
-
-from validate_schema import ROOT, load_json
 from artifact_http import fetch_public_https
-
+from validate_schema import ROOT, load_json
 
 LOCK_PATH = ROOT / "artifact-lock.json"
 MAX_INDEX_BYTES = 20 * 1024 * 1024

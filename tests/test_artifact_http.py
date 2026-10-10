@@ -122,7 +122,8 @@ class ArtifactHTTPTest(unittest.TestCase):
         for response in cases:
             clients: list[Connection] = []
 
-            def factory(*args: object) -> Connection:
+            def factory(*args: object, response: Response = response,
+                        clients: list[Connection] = clients) -> Connection:
                 client = Connection(response)
                 clients.append(client)
                 return client

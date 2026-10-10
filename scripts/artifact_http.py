@@ -197,7 +197,8 @@ def fetch_public_https(url: str, maximum: int) -> tuple[bytes, str]:
         stopped = threading.Event()
         expired = threading.Event()
 
-        def expire() -> None:
+        def expire(stopped: threading.Event, expired: threading.Event,
+                   connection: PinnedHTTPSConnection) -> None:
             if not stopped.wait(max(0.0, deadline - time.monotonic())):
                 expired.set()
                 active = connection.transport_socket
@@ -208,7 +209,8 @@ def fetch_public_https(url: str, maximum: int) -> tuple[bytes, str]:
                         pass
                     active.close()
 
-        owner = threading.Thread(target=expire, name="artifact-response-deadline")
+        owner = threading.Thread(target=expire, args=(stopped, expired, connection),
+                                 name="artifact-response-deadline")
         owner.start()
         response = None
         try:

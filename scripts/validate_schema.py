@@ -10,7 +10,6 @@ import sys
 from jsonschema import Draft202012Validator, FormatChecker
 from referencing import Registry, Resource
 
-
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 
 

@@ -9,31 +9,59 @@ permissions:
   id-token: write
   packages: write
 
+env:
+  PYTHONDONTWRITEBYTECODE: "1"
+  UV_PYTHON_DOWNLOADS: never
+
 jobs:
   publish:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v4
-        with: {persist-credentials: false}
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          python-version: "3.12"
-          cache: pip
-      - name: Install validation dependencies
-        run: python -m pip install --requirement requirements-dev.txt
-      - run: ./scripts/validate.sh
-      - name: Install ORAS
-        uses: oras-project/setup-oras@v1
-      - name: Install cosign
-        uses: sigstore/cosign-installer@v3
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.15.0"
+      - uses: astral-sh/setup-uv@bec219d24cd3e171d82865faccec33120bb574f4 # v10.1.0
+        with:
+          version: "0.13.0"
+          checksum: "1468ebd5a5541121837c5a2817b9972ba6090fa6caa3d142620850a47fb75154"
+          enable-cache: false
+      - name: Synchronize reviewed locked tools
+        run: python scripts/sync_tools.py --python "$(command -v python)"
+      - name: Verify the installed full graph
+        run: .venv/bin/python scripts/verify_tools.py --output qualification/installed-tools.json
+      - name: Validate catalog and unchanged regression suite
+        run: PATH="$PWD/.venv/bin:$PATH" ./scripts/validate.sh
+      - name: Ruff
+        run: .venv/bin/ruff check scripts tests
+      - name: Mypy
+        run: .venv/bin/mypy --config-file pyproject.toml
+      - name: Verify the retained hashed export
+        run: |
+          uv --no-config export --locked --offline --all-groups --no-default-groups --no-emit-project --format requirements-txt --output-file qualification/requirements-all.txt --python "$(command -v python)"
+          .venv/bin/python scripts/verify_export.py --reference requirements-all.txt --candidate qualification/requirements-all.txt
+      - name: Audit every locked tool version
+        run: .venv/bin/python -m pip_audit --strict --disable-pip --require-hashes --requirement qualification/requirements-all.txt --format json --output qualification/pip-audit.json --timeout 15 --progress-spinner off
+      - name: Emit the tooling environment SBOM
+        run: .venv/bin/python -m cyclonedx_py environment .venv/bin/python --pyproject pyproject.toml --output-reproducible --validate --spec-version 1.6 --output-format JSON --output-file qualification/tooling-sbom.cdx.json
+      - name: Install ORAS under the existing W17 compatibility exception
+        uses: oras-project/setup-oras@1d808f7d7f6995cc68b7bf507bfe5c5446e1dc9d # v2.0.1
+        with:
+          version: "1.2.2"
+      - name: Install selected cosign
+        uses: sigstore/cosign-installer@6f9f17788090df1f26f669e9d70d6ae9567deba6 # v4.1.2
+        with:
+          cosign-release: "v3.1.3"
       - name: Log in to GHCR
         run: echo "${{ github.token }}" | oras login ghcr.io -u "${{ github.actor }}" --password-stdin
-      - name: Publish and sign
+      - name: Publish and sign the canonical catalog
         env:
           TAG: ${{ github.ref_name }}
         run: |
           set -eu
-          python3 scripts/build_catalog.py
           cp generated/catalog.canonical.json catalog.canonical.json
           repository="ghcr.io/alphabravo-oss/astronomer-application-catalog"
           oras push --format json "${repository}:${TAG}" \
@@ -41,11 +69,15 @@ jobs:
             catalog.canonical.json:application/vnd.astronomer.application-catalog.v1+json \
             > push.json
           digest="$(jq -er '.digest | select(test("^sha256:[a-f0-9]{64}$"))' push.json)"
+          .venv/bin/python scripts/release_evidence.py --distribution-digest "${digest}" --output qualification/catalog-build-evidence.json
           cosign sign --yes "${repository}@${digest}"
+          cosign sign-blob --yes --bundle qualification/catalog-build-evidence.sigstore.json qualification/catalog-build-evidence.json
           sha256sum catalog.canonical.json > SHA256SUMS
-      - uses: actions/upload-artifact@v4
+      - name: Retain catalog and build evidence
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: application-catalog-${{ github.ref_name }}
+          if-no-files-found: error
           path: |
             catalog.canonical.json
             SHA256SUMS
@@ -56,3 +88,4 @@ jobs:
             generated/images.txt
             generated/revocations.json
             generated/static/
+            qualification/

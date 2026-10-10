@@ -14,10 +14,12 @@ and air-gap qualification is enabled.
 ## Validate
 
 ```sh
-python3 -m pip install --requirement requirements-dev.txt
-python3 scripts/resolve_artifacts.py
-python3 scripts/build_catalog.py
-./scripts/validate.sh
+# Install the selected Python 3.15.0 and uv 0.13.0 tools first.
+python3 scripts/sync_tools.py --python "$(command -v python3)"
+.venv/bin/python scripts/verify_tools.py --output qualification/installed-tools.json
+.venv/bin/python scripts/resolve_artifacts.py
+.venv/bin/python scripts/build_catalog.py
+PATH="$PWD/.venv/bin:$PATH" ./scripts/validate.sh
 ```
 
 The builder discovers optional `entries/**/application.{json,yaml,yml}` source
@@ -31,3 +33,14 @@ and image inventories, immutable digests, and a static HTTPS mirror under
 archives, rejects credential-bearing/private-network redirects, and records
 the exact archive digest and size in `artifact-lock.json`. Routine validation
 uses `--check` and performs no network access.
+
+The canonical dependency source is `pyproject.toml` plus the committed `uv.lock`.
+The retained `requirements-all.txt` is a hashed export for audit and independent
+graph comparison. Use the locked synchronizer instead of an unpinned pip install.
+The synchronizer first installs the locked setuptools/Cython backend wheels,
+then the full tool groups, permitting only PyYAML 6.0.3 to build from source with
+its pure Python loader. It rejects a different interpreter, resolver, index or
+source-build package and verifies that synchronization preserves the lock.
+
+See [tooling and qualification](docs/TOOLING.md) for the selected platform scope,
+lint/type/audit commands and the separate GitHub publication boundary.

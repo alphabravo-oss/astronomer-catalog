@@ -11,8 +11,8 @@ import shutil
 import sys
 from typing import Any
 
+from resolve_artifacts import validate_lock
 from validate_schema import ROOT, load_json, validate_catalog, validate_revocations
-
 
 GENERATED = ROOT / "generated"
 
@@ -52,10 +52,16 @@ def dependency_slug(value: Any) -> str:
 def build_document() -> tuple[dict, dict]:
     catalog = load_json(ROOT / "catalog.json")
     artifact_lock = load_json(ROOT / "artifact-lock.json")
-    locked_artifacts = artifact_lock.get("entries", {})
     discovered = discover_entries()
     if discovered:
         catalog["applications"] = discovered
+    errors = validate_catalog(catalog)
+    if errors:
+        raise ValueError("catalog schema validation failed before generation")
+    lock_errors = validate_lock(artifact_lock, catalog=catalog)
+    if lock_errors:
+        raise ValueError("artifact lock validation failed before generation")
+    locked_artifacts = artifact_lock["entries"]
     catalog["repositories"] = sorted(catalog["repositories"], key=lambda row: row["name"])
     catalog["applications"] = sorted(catalog["applications"], key=lambda row: row["slug"])
 

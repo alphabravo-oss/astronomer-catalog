@@ -8,16 +8,15 @@ import hashlib
 import ipaddress
 import json
 import pathlib
+import re
 import socket
 import sys
 import urllib.parse
-import urllib.request
 from typing import Any
 
 import yaml
-
+from artifact_http import fetch_public_https
 from validate_schema import ROOT, load_json
-
 
 LOCK_PATH = ROOT / "artifact-lock.json"
 MAX_INDEX_BYTES = 20 * 1024 * 1024
@@ -35,7 +34,7 @@ def sha256(content: bytes) -> str:
 def validate_public_https(url: str, *, allow_transient_signature: bool = False) -> None:
     parsed = urllib.parse.urlparse(url)
     if parsed.scheme != "https" or not parsed.hostname or parsed.username or parsed.password:
-        raise ValueError(f"artifact URL must be credential-free HTTPS: {url}")
+        raise ValueError("artifact URL must be credential-free HTTPS")
     sensitive_query_keys = {
         "access_token", "authorization", "credential", "jwt", "key",
         "password", "sig", "signature", "token", "x-amz-credential",
@@ -43,7 +42,7 @@ def validate_public_https(url: str, *, allow_transient_signature: bool = False) 
     }
     query_keys = {key.lower() for key, _ in urllib.parse.parse_qsl(parsed.query)}
     if not allow_transient_signature and query_keys & sensitive_query_keys:
-        raise ValueError(f"artifact URL contains credential-like query parameters: {url}")
+        raise ValueError("artifact URL contains credential-like query parameters")
     addresses = socket.getaddrinfo(parsed.hostname, parsed.port or 443, type=socket.SOCK_STREAM)
     for address in addresses:
         ip = ipaddress.ip_address(address[4][0])
@@ -52,25 +51,14 @@ def validate_public_https(url: str, *, allow_transient_signature: bool = False) 
 
 
 def fetch(url: str, maximum: int) -> tuple[bytes, str]:
-    validate_public_https(url)
-    request = urllib.request.Request(url, headers={"User-Agent": "astronomer-catalog-builder/1"})
-    with urllib.request.urlopen(request, timeout=45) as response:
-        final_url = response.geturl()
-        validate_public_https(final_url, allow_transient_signature=True)
-        length = response.headers.get("Content-Length")
-        if length and int(length) > maximum:
-            raise ValueError(f"artifact exceeds {maximum} bytes: {final_url}")
-        content = response.read(maximum + 1)
-    if len(content) > maximum:
-        raise ValueError(f"artifact exceeds {maximum} bytes: {final_url}")
-    return content, final_url
+    return fetch_public_https(url, maximum)
 
 
 def chart_url(index_url: str, index: dict, chart: str, version: str) -> str:
     versions = index.get("entries", {}).get(chart, [])
     match = next((item for item in versions if str(item.get("version")) == version), None)
     if not match:
-        raise ValueError(f"chart {chart} version {version} is absent from {index_url}")
+        raise ValueError(f"chart {chart} version {version} is absent from the Helm index")
     urls = match.get("urls") or []
     if not urls:
         raise ValueError(f"chart {chart} version {version} has no archive URL")
@@ -109,7 +97,7 @@ def resolve() -> dict:
             index_content, resolved_index_url = fetch(requested_index_url, MAX_INDEX_BYTES)
             parsed = yaml.safe_load(index_content)
             if not isinstance(parsed, dict):
-                raise ValueError(f"Helm index is not an object: {resolved_index_url}")
+                raise ValueError("Helm index is not an object")
             indexes[repository_url] = (parsed, resolved_index_url)
         index, resolved_index_url = indexes[repository_url]
         requested_chart_url = chart_url(resolved_index_url, index, chart, version)
@@ -126,8 +114,9 @@ def resolve() -> dict:
     return {"schemaVersion": 1, "entries": entries}
 
 
-def validate_lock(lock: dict) -> list[str]:
-    catalog = load_json(ROOT / "catalog.json")
+def validate_lock(lock: dict, *, catalog: dict | None = None) -> list[str]:
+    if catalog is None:
+        catalog = load_json(ROOT / "catalog.json")
     expected = {
         item["slug"]: (
             item["artifact"]["repository"],
@@ -137,32 +126,58 @@ def validate_lock(lock: dict) -> list[str]:
         for item in catalog["applications"]
     }
     errors: list[str] = []
-    if lock.get("schemaVersion") != 1:
+    if not isinstance(lock, dict):
+        return ["artifact lock must be an object"]
+    if type(lock.get("schemaVersion")) is not int or lock["schemaVersion"] != 1:
         errors.append("artifact lock schemaVersion must be 1")
     entries = lock.get("entries")
     if not isinstance(entries, dict):
         return errors + ["artifact lock entries must be an object"]
     if set(entries) != set(expected):
         errors.append("artifact lock entry set does not match catalog applications")
+    sensitive_query_keys = {
+        "access_token", "authorization", "credential", "jwt", "key",
+        "password", "sig", "signature", "token", "x-amz-credential", "x-amz-signature",
+    }
     for slug, identity in expected.items():
-        entry = entries.get(slug, {})
+        entry = entries.get(slug)
+        if not isinstance(entry, dict):
+            errors.append(f"{slug}: locked artifact must be an object")
+            continue
         actual = (entry.get("repository"), entry.get("chart"), entry.get("version"))
-        if actual != identity:
+        if entry.get("type") != "helm" or actual != identity:
             errors.append(f"{slug}: locked artifact identity does not match catalog")
-        digest_value = entry.get("digest", "")
-        if not isinstance(digest_value, str) or len(digest_value) != 71 or not digest_value.startswith("sha256:"):
+        digest_value = entry.get("digest")
+        if not isinstance(digest_value, str) or not re.fullmatch(r"sha256:[a-f0-9]{64}", digest_value):
             errors.append(f"{slug}: invalid locked digest")
-        if not isinstance(entry.get("size"), int) or entry.get("size", 0) <= 0:
+        size = entry.get("size")
+        if type(size) is not int or not 0 < size <= MAX_CHART_BYTES:
             errors.append(f"{slug}: invalid locked size")
-        url = entry.get("url", "")
-        if isinstance(url, str) and url.startswith("charts/"):
+        url = entry.get("url")
+        if not isinstance(url, str) or not url:
+            errors.append(f"{slug}: locked URL must be a nonempty string")
+            continue
+        if url.startswith("charts/"):
+            canonical_local = f"charts/{identity[1]}-{identity[2]}.tgz"
             archive = ROOT / url
-            if not archive.is_file() or sha256(archive.read_bytes()) != digest_value:
-                errors.append(f"{slug}: local archive does not match locked digest")
-        elif isinstance(url, str):
+            if url != canonical_local or len(pathlib.PurePosixPath(url).parts) != 2 or any(part in (".", "..") for part in pathlib.PurePosixPath(url).parts):
+                errors.append(f"{slug}: local archive path is not canonical")
+                continue
+            if (ROOT / "charts").is_symlink() or archive.is_symlink() or not archive.is_file():
+                errors.append(f"{slug}: local archive must be an owned regular file")
+                continue
+            with archive.open("rb") as stream:
+                content = stream.read(MAX_CHART_BYTES + 1)
+            if len(content) > MAX_CHART_BYTES or len(content) != size or sha256(content) != digest_value:
+                errors.append(f"{slug}: local archive does not match locked digest and size")
+        else:
             try:
-                parsed = urllib.parse.urlparse(url)
-                if parsed.scheme != "https" or not parsed.hostname or parsed.username or parsed.password:
+                parsed = urllib.parse.urlsplit(url)
+                # Offline validation does not resolve DNS or fetch artifacts.
+                if (parsed.scheme != "https" or not parsed.hostname or parsed.username or parsed.password
+                        or parsed.fragment or parsed.port == 0
+                        or any(ord(character) < 32 for character in url)
+                        or {key.lower() for key, _ in urllib.parse.parse_qsl(parsed.query)} & sensitive_query_keys):
                     errors.append(f"{slug}: locked URL is not credential-free HTTPS")
             except ValueError:
                 errors.append(f"{slug}: locked URL is invalid")

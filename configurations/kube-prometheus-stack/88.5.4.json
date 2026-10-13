@@ -1,0 +1,426 @@
+{
+  "version": "88.5.4",
+  "appVersion": "v0.93.1",
+  "artifact": {
+    "type": "helm-http",
+    "repository": "prometheus-community",
+    "name": "kube-prometheus-stack",
+    "version": "88.5.4",
+    "digest": "sha256:c17a08afbbaa8577b5bdc990511b3cf1a3a37ae76ce5817e7478300f9933749b"
+  },
+  "identities": {
+    "chartDigest": "sha256:c17a08afbbaa8577b5bdc990511b3cf1a3a37ae76ce5817e7478300f9933749b"
+  },
+  "available": true,
+  "recommended": true,
+  "supportTier": "experimental",
+  "compatibility": {
+    "kubernetes": ">=1.31.0 <1.36.0"
+  },
+  "configuration": {
+    "schema": {
+      "type": "object",
+      "properties": {
+        "prometheusOperator": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": true,
+              "title": "Deploy Prometheus Operator",
+              "description": "Disable this when the cluster already has a Prometheus Operator managing the same CRDs."
+            }
+          }
+        },
+        "prometheus": {
+          "type": "object",
+          "properties": {
+            "prometheusSpec": {
+              "type": "object",
+              "properties": {
+                "scrapeInterval": {
+                  "type": "string",
+                  "default": "",
+                  "title": "Scrape interval"
+                },
+                "evaluationInterval": {
+                  "type": "string",
+                  "default": "",
+                  "title": "Rule evaluation interval"
+                },
+                "retention": {
+                  "type": "string",
+                  "default": "10d",
+                  "title": "Prometheus retention"
+                },
+                "retentionSize": {
+                  "type": "string",
+                  "default": "",
+                  "title": "Prometheus retention size"
+                },
+                "replicas": {
+                  "type": "integer",
+                  "default": 1,
+                  "title": "Prometheus replicas",
+                  "minimum": 0
+                },
+                "shards": {
+                  "type": "integer",
+                  "default": 1,
+                  "title": "Prometheus shards",
+                  "minimum": 0
+                },
+                "enableAdminAPI": {
+                  "type": "boolean",
+                  "default": false,
+                  "title": "Enable admin API"
+                },
+                "ignoreNamespaceSelectors": {
+                  "type": "boolean",
+                  "default": false,
+                  "title": "Ignore monitor namespace selectors"
+                },
+                "storageSpec": {
+                  "type": "object",
+                  "properties": {
+                    "volumeClaimTemplate": {
+                      "type": "object",
+                      "properties": {
+                        "spec": {
+                          "type": "object",
+                          "properties": {
+                            "storageClassName": {
+                              "type": "string",
+                              "title": "StorageClass",
+                              "x-astronomer-resource": "storageclasses"
+                            },
+                            "accessModes": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "enum": [
+                                  "ReadWriteOnce",
+                                  "ReadOnlyMany",
+                                  "ReadWriteMany",
+                                  "ReadWriteOncePod"
+                                ]
+                              },
+                              "title": "Access modes"
+                            },
+                            "resources": {
+                              "type": "object",
+                              "properties": {
+                                "requests": {
+                                  "type": "object",
+                                  "properties": {
+                                    "storage": {
+                                      "type": "string",
+                                      "title": "Requested storage",
+                                      "pattern": "^([0-9]+(\\.[0-9]+)?([EPTGMK]i?|m)?|)$"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "resources": {
+                  "type": "object",
+                  "properties": {
+                    "requests": {
+                      "type": "object",
+                      "title": "Requests",
+                      "properties": {
+                        "cpu": {
+                          "type": "string",
+                          "title": "CPU request",
+                          "pattern": "^([0-9]+(\\.[0-9]+)?([EPTGMK]i?|m)?|)$"
+                        },
+                        "memory": {
+                          "type": "string",
+                          "title": "Memory request",
+                          "pattern": "^([0-9]+(\\.[0-9]+)?([EPTGMK]i?|m)?|)$"
+                        }
+                      }
+                    },
+                    "limits": {
+                      "type": "object",
+                      "title": "Limits",
+                      "properties": {
+                        "cpu": {
+                          "type": "string",
+                          "title": "CPU limit",
+                          "pattern": "^([0-9]+(\\.[0-9]+)?([EPTGMK]i?|m)?|)$"
+                        },
+                        "memory": {
+                          "type": "string",
+                          "title": "Memory limit",
+                          "pattern": "^([0-9]+(\\.[0-9]+)?([EPTGMK]i?|m)?|)$"
+                        }
+                      }
+                    }
+                  },
+                  "title": "Prometheus resources"
+                }
+              }
+            }
+          }
+        },
+        "alertmanager": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": true,
+              "title": "Enable Alertmanager"
+            },
+            "alertmanagerSpec": {
+              "type": "object",
+              "properties": {
+                "replicas": {
+                  "type": "integer",
+                  "default": 1,
+                  "title": "Alertmanager replicas",
+                  "minimum": 0
+                },
+                "retention": {
+                  "type": "string",
+                  "default": "120h",
+                  "title": "Alert retention"
+                },
+                "configSecret": {
+                  "type": "string",
+                  "title": "Existing Alertmanager config Secret",
+                  "description": "Name of a Secret in the release namespace.",
+                  "x-astronomer-resource": "secrets"
+                },
+                "storage": {
+                  "type": "object",
+                  "properties": {
+                    "volumeClaimTemplate": {
+                      "type": "object",
+                      "properties": {
+                        "spec": {
+                          "type": "object",
+                          "properties": {
+                            "storageClassName": {
+                              "type": "string",
+                              "title": "StorageClass",
+                              "x-astronomer-resource": "storageclasses"
+                            },
+                            "accessModes": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "enum": [
+                                  "ReadWriteOnce",
+                                  "ReadOnlyMany",
+                                  "ReadWriteMany",
+                                  "ReadWriteOncePod"
+                                ]
+                              },
+                              "title": "Access modes"
+                            },
+                            "resources": {
+                              "type": "object",
+                              "properties": {
+                                "requests": {
+                                  "type": "object",
+                                  "properties": {
+                                    "storage": {
+                                      "type": "string",
+                                      "title": "Requested storage",
+                                      "pattern": "^([0-9]+(\\.[0-9]+)?([EPTGMK]i?|m)?|)$"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "resources": {
+                  "type": "object",
+                  "properties": {
+                    "requests": {
+                      "type": "object",
+                      "title": "Requests",
+                      "properties": {
+                        "cpu": {
+                          "type": "string",
+                          "title": "CPU request",
+                          "pattern": "^([0-9]+(\\.[0-9]+)?([EPTGMK]i?|m)?|)$"
+                        },
+                        "memory": {
+                          "type": "string",
+                          "title": "Memory request",
+                          "pattern": "^([0-9]+(\\.[0-9]+)?([EPTGMK]i?|m)?|)$"
+                        }
+                      }
+                    },
+                    "limits": {
+                      "type": "object",
+                      "title": "Limits",
+                      "properties": {
+                        "cpu": {
+                          "type": "string",
+                          "title": "CPU limit",
+                          "pattern": "^([0-9]+(\\.[0-9]+)?([EPTGMK]i?|m)?|)$"
+                        },
+                        "memory": {
+                          "type": "string",
+                          "title": "Memory limit",
+                          "pattern": "^([0-9]+(\\.[0-9]+)?([EPTGMK]i?|m)?|)$"
+                        }
+                      }
+                    }
+                  },
+                  "title": "Alertmanager resources"
+                }
+              }
+            }
+          }
+        },
+        "grafana": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": true,
+              "title": "Enable Grafana"
+            },
+            "admin": {
+              "type": "object",
+              "properties": {
+                "existingSecret": {
+                  "type": "string",
+                  "default": "",
+                  "title": "Existing Grafana admin Secret",
+                  "x-astronomer-resource": "secrets"
+                }
+              }
+            },
+            "persistence": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean",
+                  "title": "Enable Grafana persistence"
+                },
+                "storageClassName": {
+                  "type": "string",
+                  "title": "Grafana StorageClass",
+                  "x-astronomer-resource": "storageclasses"
+                },
+                "size": {
+                  "type": "string",
+                  "title": "Grafana volume size"
+                }
+              }
+            }
+          }
+        },
+        "nodeExporter": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": true,
+              "title": "Enable Node Exporter"
+            }
+          }
+        },
+        "kubeStateMetrics": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": true,
+              "title": "Enable kube-state-metrics"
+            }
+          }
+        }
+      }
+    },
+    "presets": [
+      {
+        "id": "standard",
+        "label": "Cluster monitoring",
+        "description": "Prometheus, Grafana and Alertmanager with bundled exporters disabled to avoid duplicate platform collectors. Configure persistent storage before production use.",
+        "values": {
+          "nodeExporter": {
+            "enabled": false
+          },
+          "kubeStateMetrics": {
+            "enabled": false
+          }
+        }
+      },
+      {
+        "id": "persistent",
+        "label": "Persistent monitoring",
+        "description": "Persistent volumes for Prometheus, Alertmanager and Grafana using the cluster default StorageClass. Select suitable storage and size each workload for your cluster.",
+        "values": {
+          "nodeExporter": {
+            "enabled": false
+          },
+          "kubeStateMetrics": {
+            "enabled": false
+          },
+          "prometheus": {
+            "prometheusSpec": {
+              "storageSpec": {
+                "volumeClaimTemplate": {
+                  "spec": {
+                    "accessModes": [
+                      "ReadWriteOnce"
+                    ],
+                    "resources": {
+                      "requests": {
+                        "storage": "50Gi"
+                      }
+                    }
+                  }
+                }
+              },
+              "retention": "15d"
+            }
+          },
+          "alertmanager": {
+            "alertmanagerSpec": {
+              "storage": {
+                "volumeClaimTemplate": {
+                  "spec": {
+                    "accessModes": [
+                      "ReadWriteOnce"
+                    ],
+                    "resources": {
+                      "requests": {
+                        "storage": "10Gi"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "grafana": {
+            "persistence": {
+              "enabled": true,
+              "size": "10Gi"
+            }
+          }
+        }
+      }
+    ],
+    "defaultPreset": "standard",
+    "namespace": "astronomer-kube-prometheus"
+  }
+}

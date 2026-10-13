@@ -1,0 +1,132 @@
+{
+  "version": "10.5.15",
+  "appVersion": "12.3.1",
+  "artifact": {
+    "type": "helm-http",
+    "repository": "grafana",
+    "name": "grafana",
+    "version": "10.5.15",
+    "digest": "sha256:c08c87969270402e7d5227edb8385af67cc32ee34817bff89773ad02303b5d79"
+  },
+  "identities": {
+    "chartDigest": "sha256:c08c87969270402e7d5227edb8385af67cc32ee34817bff89773ad02303b5d79"
+  },
+  "available": true,
+  "recommended": true,
+  "supportTier": "upstream",
+  "compatibility": {
+    "kubernetes": ">=1.31.0 <1.36.0"
+  },
+  "configuration": {
+    "schema": {
+      "type": "object",
+      "properties": {
+        "replicas": {
+          "type": "integer",
+          "default": 1,
+          "minimum": 0
+        },
+        "persistence": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": false,
+              "title": "Enable persistence"
+            },
+            "storageClassName": {
+              "type": "string",
+              "title": "StorageClass",
+              "x-astronomer-resource": "storageclasses"
+            },
+            "size": {
+              "type": "string",
+              "default": "10Gi",
+              "title": "Volume size"
+            }
+          }
+        },
+        "admin": {
+          "type": "object",
+          "properties": {
+            "existingSecret": {
+              "type": "string",
+              "default": "",
+              "title": "Existing admin Secret",
+              "x-astronomer-resource": "secrets"
+            }
+          }
+        },
+        "ingress": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": false,
+              "title": "Enable Ingress"
+            },
+            "hosts": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "default": "chart-example.local"
+              },
+              "default": [
+                "chart-example.local"
+              ],
+              "title": "Ingress hosts"
+            }
+          }
+        },
+        "resources": {
+          "type": "object",
+          "properties": {
+            "requests": {
+              "type": "object",
+              "title": "Requests",
+              "properties": {
+                "cpu": {
+                  "type": "string",
+                  "title": "CPU request",
+                  "pattern": "^([0-9]+(\\.[0-9]+)?([EPTGMK]i?|m)?|)$"
+                },
+                "memory": {
+                  "type": "string",
+                  "title": "Memory request",
+                  "pattern": "^([0-9]+(\\.[0-9]+)?([EPTGMK]i?|m)?|)$"
+                }
+              }
+            },
+            "limits": {
+              "type": "object",
+              "title": "Limits",
+              "properties": {
+                "cpu": {
+                  "type": "string",
+                  "title": "CPU limit",
+                  "pattern": "^([0-9]+(\\.[0-9]+)?([EPTGMK]i?|m)?|)$"
+                },
+                "memory": {
+                  "type": "string",
+                  "title": "Memory limit",
+                  "pattern": "^([0-9]+(\\.[0-9]+)?([EPTGMK]i?|m)?|)$"
+                }
+              }
+            }
+          },
+          "title": "Resources"
+        }
+      }
+    },
+    "presets": [
+      {
+        "id": "upstream",
+        "label": "Upstream defaults",
+        "description": "Start with the exact chart defaults; configure storage, exposure and secret references for your cluster.",
+        "values": {}
+      }
+    ],
+    "defaultPreset": "upstream",
+    "namespace": "astronomer-grafana"
+  }
+}

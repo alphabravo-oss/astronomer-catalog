@@ -1,0 +1,290 @@
+{
+  "reviewedAt": "2026-10-13T00:01:55.576479+00:00",
+  "chartVersion": "1.12.1",
+  "previousLock": {
+    "chart": "longhorn",
+    "digest": "sha256:d70764e2d6cce673482da4d91da5b44a9791cda842c1914f77e7806ad1cd94bb",
+    "repository": "longhorn",
+    "size": 79080,
+    "type": "helm",
+    "url": "https://github.com/longhorn/charts/releases/download/longhorn-1.12.1/longhorn-1.12.1.tgz",
+    "version": "1.12.1"
+  },
+  "acceptedArtifact": {
+    "chart": "longhorn",
+    "digest": "sha256:c8cf4b35a9d872cd5f7e44fd26d8e6ac7c2abaee42f4e2f2a0b0ebbc6e3a6116",
+    "repository": "longhorn",
+    "size": 79079,
+    "type": "helm",
+    "url": "https://github.com/longhorn/charts/releases/download/longhorn-1.12.1/longhorn-1.12.1.tgz",
+    "version": "1.12.1"
+  },
+  "releaseURL": "https://github.com/longhorn/charts/releases/tag/longhorn-1.12.1",
+  "releaseCommit": "3d8e92c88396a53591eef3b0859a759a336c57ed",
+  "releaseAsset": {
+    "id": 530802339,
+    "size": 79079,
+    "digest": "sha256:c8cf4b35a9d872cd5f7e44fd26d8e6ac7c2abaee42f4e2f2a0b0ebbc6e3a6116",
+    "created_at": "2026-08-26T12:50:37Z",
+    "updated_at": "2026-08-26T12:50:37Z",
+    "browser_download_url": "https://github.com/longhorn/charts/releases/download/longhorn-1.12.1/longhorn-1.12.1.tgz"
+  },
+  "indexURL": "https://charts.longhorn.io/index.yaml",
+  "indexDigest": "sha256:c8cf4b35a9d872cd5f7e44fd26d8e6ac7c2abaee42f4e2f2a0b0ebbc6e3a6116",
+  "sourceArchiveDigest": "sha256:f8c3248b51a7b3208d1388c98896ec07c88108b8ab1dd54b771542d890510ce4",
+  "files": [
+    {
+      "path": "Chart.yaml",
+      "archiveDigest": "sha256:0aa6eb97b7ff66756cf8d2830781ad714015d98dc33d45358df979f20be134be",
+      "sourceDigest": "sha256:c375210ac82b89acce9dcd2d2d6e7d51a7aff6c2b4ceb5265a1e26afa71ee457",
+      "comparison": "yaml-semantically-identical"
+    },
+    {
+      "path": "values.yaml",
+      "archiveDigest": "sha256:0c1349f5f35c7e269bfe4385b709fa0a849f9398ca806ccf3e1f4dd7513ddc45",
+      "sourceDigest": "sha256:0c1349f5f35c7e269bfe4385b709fa0a849f9398ca806ccf3e1f4dd7513ddc45",
+      "comparison": "byte-identical"
+    },
+    {
+      "path": "templates/NOTES.txt",
+      "archiveDigest": "sha256:b0bcd9aebd0fbfa1c672b25916373f7859f27ca1dde0715238aa75eba7537ebc",
+      "sourceDigest": "sha256:b0bcd9aebd0fbfa1c672b25916373f7859f27ca1dde0715238aa75eba7537ebc",
+      "comparison": "byte-identical"
+    },
+    {
+      "path": "templates/_helpers.tpl",
+      "archiveDigest": "sha256:d231f6d0b401a3a77838ed29993905a9b2293d55328a0184f3d74135144bb6d1",
+      "sourceDigest": "sha256:d231f6d0b401a3a77838ed29993905a9b2293d55328a0184f3d74135144bb6d1",
+      "comparison": "byte-identical"
+    },
+    {
+      "path": "templates/clusterrole.yaml",
+      "archiveDigest": "sha256:2c278dbb795a9950e0e3e98ef6f3833661c26c705d5668eb3a1d55ed97f439e4",
+      "sourceDigest": "sha256:2c278dbb795a9950e0e3e98ef6f3833661c26c705d5668eb3a1d55ed97f439e4",
+      "comparison": "byte-identical"
+    },
+    {
+      "path": "templates/clusterrolebinding.yaml",
+      "archiveDigest": "sha256:203a58fa99d6a268f73b1032ab061a42bef428f264ec172a760284ec520b8fab",
+      "sourceDigest": "sha256:203a58fa99d6a268f73b1032ab061a42bef428f264ec172a760284ec520b8fab",
+      "comparison": "byte-identical"
+    },
+    {
+      "path": "templates/crds.yaml",
+      "archiveDigest": "sha256:57ca77ef3208977ccb2812d23f963ddc588509a459e85c37cfef9c83bbeb989c",
+      "sourceDigest": "sha256:57ca77ef3208977ccb2812d23f963ddc588509a459e85c37cfef9c83bbeb989c",
+      "comparison": "byte-identical"
+    },
+    {
+      "path": "templates/daemonset-sa.yaml",
+      "archiveDigest": "sha256:37d6edc017c1f9dec56d4ad8553d889506d40896a260784dc4e37d7ea3546a47",
+      "sourceDigest": "sha256:37d6edc017c1f9dec56d4ad8553d889506d40896a260784dc4e37d7ea3546a47",
+      "comparison": "byte-identical"
+    },
+    {
+      "path": "templates/default-resource.yaml",
+      "archiveDigest": "sha256:5ef04a6d81bb03e73c5f44b517fc1c289f4e1ab7de1062df48e99306ae73af58",
+      "sourceDigest": "sha256:5ef04a6d81bb03e73c5f44b517fc1c289f4e1ab7de1062df48e99306ae73af58",
+      "comparison": "byte-identical"
+    },
+    {
+      "path": "templates/default-setting.yaml",
+      "archiveDigest": "sha256:57bcf24cfdb2e69db461019732b810ebf811d94614fcc46d354ffc3723a8930c",
+      "sourceDigest": "sha256:57bcf24cfdb2e69db461019732b810ebf811d94614fcc46d354ffc3723a8930c",
+      "comparison": "byte-identical"
+    },
+    {
+      "path": "templates/deployment-driver.yaml",
+      "archiveDigest": "sha256:50b9b94341c0edff5540d54338112568a677f1392430812722d29d915a08ad40",
+      "sourceDigest": "sha256:50b9b94341c0edff5540d54338112568a677f1392430812722d29d915a08ad40",
+      "comparison": "byte-identical"
+    },
+    {
+      "path": "templates/deployment-ui.yaml",
+      "archiveDigest": "sha256:0fff2fb454732f71341c595ff4a4873664dc3e900fc9321192fd45e74eb045a2",
+      "sourceDigest": "sha256:0fff2fb454732f71341c595ff4a4873664dc3e900fc9321192fd45e74eb045a2",
+      "comparison": "byte-identical"
+    },
+    {
+      "path": "templates/extra-objects.yaml",
+      "archiveDigest": "sha256:4124b922a63e3fe113fde59c946b75138aa3e92ee066cf6913736f9353066581",
+      "sourceDigest": "sha256:4124b922a63e3fe113fde59c946b75138aa3e92ee066cf6913736f9353066581",
+      "comparison": "byte-identical"
+    },
+    {
+      "path": "templates/httproute.yaml",
+      "archiveDigest": "sha256:44b475d303800b7da0e02ae37798fbe1825984a60575f53ee03de89424a6f39f",
+      "sourceDigest": "sha256:44b475d303800b7da0e02ae37798fbe1825984a60575f53ee03de89424a6f39f",
+      "comparison": "byte-identical"
+    },
+    {
+      "path": "templates/ingress.yaml",
+      "archiveDigest": "sha256:9544d79413fe4a635019f14624d87ed8979ad44753e62143931435716a261c16",
+      "sourceDigest": "sha256:9544d79413fe4a635019f14624d87ed8979ad44753e62143931435716a261c16",
+      "comparison": "byte-identical"
+    },
+    {
+      "path": "templates/network-policies/backing-image-data-source-network-policy.yaml",
+      "archiveDigest": "sha256:cfd66ef48c1fd77925a516a75e2816d8f32495d3292128132881b5daed3458e2",
+      "sourceDigest": "sha256:cfd66ef48c1fd77925a516a75e2816d8f32495d3292128132881b5daed3458e2",
+      "comparison": "byte-identical"
+    },
+    {
+      "path": "templates/network-policies/backing-image-manager-network-policy.yaml",
+      "archiveDigest": "sha256:15f0279bfaec9ce705abc32e42df4342f8f5738a00fa88aa7d94bec07b41b96d",
+      "sourceDigest": "sha256:15f0279bfaec9ce705abc32e42df4342f8f5738a00fa88aa7d94bec07b41b96d",
+      "comparison": "byte-identical"
+    },
+    {
+      "path": "templates/network-policies/instance-manager-networking.yaml",
+      "archiveDigest": "sha256:93723bad3b0f7e7d39314c0a098304d39bccaac9984afa81da2623a66950f358",
+      "sourceDigest": "sha256:93723bad3b0f7e7d39314c0a098304d39bccaac9984afa81da2623a66950f358",
+      "comparison": "byte-identical"
+    },
+    {
+      "path": "templates/network-policies/manager-network-policy.yaml",
+      "archiveDigest": "sha256:1fceecc7fc2d6095674b0de06691295c81b4ee5f8c9ed535b4128d4461e98626",
+      "sourceDigest": "sha256:1fceecc7fc2d6095674b0de06691295c81b4ee5f8c9ed535b4128d4461e98626",
+      "comparison": "byte-identical"
+    },
+    {
+      "path": "templates/network-policies/recovery-backend-network-policy.yaml",
+      "archiveDigest": "sha256:a428d1ec0a5a05939abd061ed729f5ead3d5b350909c1559e9de256862816103",
+      "sourceDigest": "sha256:a428d1ec0a5a05939abd061ed729f5ead3d5b350909c1559e9de256862816103",
+      "comparison": "byte-identical"
+    },
+    {
+      "path": "templates/network-policies/ui-frontend-network-policy.yaml",
+      "archiveDigest": "sha256:27b21614d55c63d1b5bed67bb9acafc55cf0769b9bdd384c92e07db5eec1a167",
+      "sourceDigest": "sha256:27b21614d55c63d1b5bed67bb9acafc55cf0769b9bdd384c92e07db5eec1a167",
+      "comparison": "byte-identical"
+    },
+    {
+      "path": "templates/network-policies/webhook-network-policy.yaml",
+      "archiveDigest": "sha256:4832370b2f532395b48f75e0c61fd4e38976322caf75f94a5825d4d342441133",
+      "sourceDigest": "sha256:4832370b2f532395b48f75e0c61fd4e38976322caf75f94a5825d4d342441133",
+      "comparison": "byte-identical"
+    },
+    {
+      "path": "templates/postupgrade-job.yaml",
+      "archiveDigest": "sha256:2a58816be5ae05f78c49a991f7f90f2d40ecbccd7454b2a81fc690b88d7016ea",
+      "sourceDigest": "sha256:2a58816be5ae05f78c49a991f7f90f2d40ecbccd7454b2a81fc690b88d7016ea",
+      "comparison": "byte-identical"
+    },
+    {
+      "path": "templates/preupgrade-job.yaml",
+      "archiveDigest": "sha256:19623d9a7c6e618209d4832c05be54553091a92f5f3e0eab40f09401c95cf8f6",
+      "sourceDigest": "sha256:19623d9a7c6e618209d4832c05be54553091a92f5f3e0eab40f09401c95cf8f6",
+      "comparison": "byte-identical"
+    },
+    {
+      "path": "templates/priorityclass.yaml",
+      "archiveDigest": "sha256:41d809919c74c670ce3eff79d206f15c5a3dd9fd939dfb6d556c2bcd85bbb4ba",
+      "sourceDigest": "sha256:41d809919c74c670ce3eff79d206f15c5a3dd9fd939dfb6d556c2bcd85bbb4ba",
+      "comparison": "byte-identical"
+    },
+    {
+      "path": "templates/psp.yaml",
+      "archiveDigest": "sha256:3e0c67f93640ea85667c660af657b893262712562374147a1683e6b3518994c1",
+      "sourceDigest": "sha256:3e0c67f93640ea85667c660af657b893262712562374147a1683e6b3518994c1",
+      "comparison": "byte-identical"
+    },
+    {
+      "path": "templates/registry-secret.yaml",
+      "archiveDigest": "sha256:bd5c13ab322e817f8ba6e9df15f8d72c80ee6042e306b8c88ce8af9ac936b3bc",
+      "sourceDigest": "sha256:bd5c13ab322e817f8ba6e9df15f8d72c80ee6042e306b8c88ce8af9ac936b3bc",
+      "comparison": "byte-identical"
+    },
+    {
+      "path": "templates/role.yaml",
+      "archiveDigest": "sha256:d1b73a0db5d48cbcd9a2ac6d3c01bb52595fe091a60934faf2190f24f4cfe12e",
+      "sourceDigest": "sha256:d1b73a0db5d48cbcd9a2ac6d3c01bb52595fe091a60934faf2190f24f4cfe12e",
+      "comparison": "byte-identical"
+    },
+    {
+      "path": "templates/rolebinding.yaml",
+      "archiveDigest": "sha256:1165da6c95e35f60837aafebd880169334a1b8c1848459dd7da731cd4c290ee7",
+      "sourceDigest": "sha256:1165da6c95e35f60837aafebd880169334a1b8c1848459dd7da731cd4c290ee7",
+      "comparison": "byte-identical"
+    },
+    {
+      "path": "templates/serviceaccount.yaml",
+      "archiveDigest": "sha256:d09377c498207a3b8f02080e94d4d659d2730e9aef7cf24a0ac1e2c1172f4234",
+      "sourceDigest": "sha256:d09377c498207a3b8f02080e94d4d659d2730e9aef7cf24a0ac1e2c1172f4234",
+      "comparison": "byte-identical"
+    },
+    {
+      "path": "templates/servicemonitor.yaml",
+      "archiveDigest": "sha256:a01947f74546e745129f9ff222936778a952c28ad835ef7fdd6086b8e65754e4",
+      "sourceDigest": "sha256:a01947f74546e745129f9ff222936778a952c28ad835ef7fdd6086b8e65754e4",
+      "comparison": "byte-identical"
+    },
+    {
+      "path": "templates/services.yaml",
+      "archiveDigest": "sha256:60fef3c1f84ffe9b766baa4d8a6194c100e79e5645e804780ba62783b3e886b8",
+      "sourceDigest": "sha256:60fef3c1f84ffe9b766baa4d8a6194c100e79e5645e804780ba62783b3e886b8",
+      "comparison": "byte-identical"
+    },
+    {
+      "path": "templates/storageclass.yaml",
+      "archiveDigest": "sha256:cfdc12ed3ee68796799816d3d185ae9db4f48e89362cdb8b0c38a878628025a4",
+      "sourceDigest": "sha256:cfdc12ed3ee68796799816d3d185ae9db4f48e89362cdb8b0c38a878628025a4",
+      "comparison": "byte-identical"
+    },
+    {
+      "path": "templates/tls-secrets.yaml",
+      "archiveDigest": "sha256:03154c3b01713ab01e480c5532443e5b8033c9b42c3d7559df61c763b4093fdd",
+      "sourceDigest": "sha256:03154c3b01713ab01e480c5532443e5b8033c9b42c3d7559df61c763b4093fdd",
+      "comparison": "byte-identical"
+    },
+    {
+      "path": "templates/uninstall-job.yaml",
+      "archiveDigest": "sha256:b2a9461f9393cba02558023bc597d7eb45e3ac356ecede6944207403075c035b",
+      "sourceDigest": "sha256:b2a9461f9393cba02558023bc597d7eb45e3ac356ecede6944207403075c035b",
+      "comparison": "byte-identical"
+    },
+    {
+      "path": "templates/validate-psp-install.yaml",
+      "archiveDigest": "sha256:6ced6fbcaae2b069d985850e84e7c23a6a4f1a37190a4f631c070b427a8d0390",
+      "sourceDigest": "sha256:6ced6fbcaae2b069d985850e84e7c23a6a4f1a37190a4f631c070b427a8d0390",
+      "comparison": "byte-identical"
+    },
+    {
+      "path": ".helmignore",
+      "archiveDigest": "sha256:0a1e8ed08a372234d8af441442044a88c27dc4409e039dbd3e113fec1ee91024",
+      "sourceDigest": "sha256:0a1e8ed08a372234d8af441442044a88c27dc4409e039dbd3e113fec1ee91024",
+      "comparison": "byte-identical"
+    },
+    {
+      "path": "README.md",
+      "archiveDigest": "sha256:38a804008a245c77b08da769e6d218b1f30103a7b523c3260d08328b397b93ea",
+      "sourceDigest": "sha256:38a804008a245c77b08da769e6d218b1f30103a7b523c3260d08328b397b93ea",
+      "comparison": "byte-identical"
+    },
+    {
+      "path": "README.md.gotmpl",
+      "archiveDigest": "sha256:8b263917bac3d947ad66f3f021abeb486d5e5fcfd1b00844c57f535d0a1aa8cc",
+      "sourceDigest": "sha256:8b263917bac3d947ad66f3f021abeb486d5e5fcfd1b00844c57f535d0a1aa8cc",
+      "comparison": "byte-identical"
+    },
+    {
+      "path": "app-readme.md",
+      "archiveDigest": "sha256:6ab8ebb78c47cbc5f8d5e2cc19360ca54e9cc1160d243f7fcfa255fb2fcd7743",
+      "sourceDigest": "sha256:6ab8ebb78c47cbc5f8d5e2cc19360ca54e9cc1160d243f7fcfa255fb2fcd7743",
+      "comparison": "byte-identical"
+    },
+    {
+      "path": "ocp-readme.md",
+      "archiveDigest": "sha256:32e1c9c353ae856a06417c7a8f0c0a00c5f68e0db6a7620c37aa646303d4db9e",
+      "sourceDigest": "sha256:32e1c9c353ae856a06417c7a8f0c0a00c5f68e0db6a7620c37aa646303d4db9e",
+      "comparison": "byte-identical"
+    },
+    {
+      "path": "questions.yaml",
+      "archiveDigest": "sha256:b2cbb112ac5bd4891e00e61a581cc4eea63c230759a4423485f1dbcd5e8e71f2",
+      "sourceDigest": "sha256:b2cbb112ac5bd4891e00e61a581cc4eea63c230759a4423485f1dbcd5e8e71f2",
+      "comparison": "byte-identical"
+    }
+  ],
+  "conclusion": "All 42 packaged files match release source: 41 byte-identical; Chart.yaml differs only in YAML serialization. Current upstream index, GitHub asset metadata and downloaded archive agree. Previous lock bytes are unavailable, so this corrects an unverified lock; it does not prove that upstream replaced an artifact. No live qualification or Assured claim."
+}

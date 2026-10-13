@@ -1,0 +1,120 @@
+{
+  "version": "4.56.1",
+  "appVersion": "1.12.1",
+  "artifact": {
+    "type": "helm-http",
+    "repository": "prometheus-community",
+    "name": "prometheus-node-exporter",
+    "version": "4.56.1",
+    "digest": "sha256:70fab291e00a34c58fd943bb075fecc2e2e73fa95db1bcbbe7cdfe008795354a"
+  },
+  "identities": {
+    "chartDigest": "sha256:70fab291e00a34c58fd943bb075fecc2e2e73fa95db1bcbbe7cdfe008795354a"
+  },
+  "available": true,
+  "recommended": true,
+  "supportTier": "experimental",
+  "compatibility": {
+    "kubernetes": ">=1.31.0 <1.36.0"
+  },
+  "configuration": {
+    "schema": {
+      "type": "object",
+      "properties": {
+        "hostNetwork": {
+          "type": "boolean",
+          "default": true,
+          "title": "Use host network"
+        },
+        "hostPID": {
+          "type": "boolean",
+          "default": true,
+          "title": "Use host PID namespace"
+        },
+        "hostRootFsMount": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": true,
+              "title": "Mount host root filesystem"
+            }
+          }
+        },
+        "service": {
+          "type": "object",
+          "properties": {
+            "port": {
+              "type": "integer",
+              "default": 9100,
+              "title": "Metrics port"
+            }
+          }
+        },
+        "prometheus": {
+          "type": "object",
+          "properties": {
+            "monitor": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean",
+                  "default": false,
+                  "title": "Create ServiceMonitor"
+                }
+              }
+            }
+          }
+        },
+        "resources": {
+          "type": "object",
+          "properties": {
+            "requests": {
+              "type": "object",
+              "title": "Requests",
+              "properties": {
+                "cpu": {
+                  "type": "string",
+                  "title": "CPU request",
+                  "pattern": "^([0-9]+(\\.[0-9]+)?([EPTGMK]i?|m)?|)$"
+                },
+                "memory": {
+                  "type": "string",
+                  "title": "Memory request",
+                  "pattern": "^([0-9]+(\\.[0-9]+)?([EPTGMK]i?|m)?|)$"
+                }
+              }
+            },
+            "limits": {
+              "type": "object",
+              "title": "Limits",
+              "properties": {
+                "cpu": {
+                  "type": "string",
+                  "title": "CPU limit",
+                  "pattern": "^([0-9]+(\\.[0-9]+)?([EPTGMK]i?|m)?|)$"
+                },
+                "memory": {
+                  "type": "string",
+                  "title": "Memory limit",
+                  "pattern": "^([0-9]+(\\.[0-9]+)?([EPTGMK]i?|m)?|)$"
+                }
+              }
+            }
+          },
+          "title": "Resources"
+        }
+      }
+    },
+    "presets": [
+      {
+        "id": "upstream",
+        "label": "Upstream defaults",
+        "description": "Start with the exact chart defaults; configure storage, exposure and secret references for your cluster.",
+        "values": {}
+      }
+    ],
+    "defaultPreset": "upstream",
+    "namespace": "astronomer-monitoring"
+  }
+}

@@ -1,0 +1,133 @@
+{
+  "version": "2.20.2",
+  "appVersion": "2.20.2",
+  "artifact": {
+    "type": "helm-http",
+    "repository": "kedacore",
+    "name": "keda",
+    "version": "2.20.2",
+    "digest": "sha256:db60b1fa60f0565fefa4ce2f87e855b6a8854363ee82962fbe28a12a70d64c4c"
+  },
+  "identities": {
+    "chartDigest": "sha256:db60b1fa60f0565fefa4ce2f87e855b6a8854363ee82962fbe28a12a70d64c4c"
+  },
+  "available": true,
+  "recommended": true,
+  "supportTier": "upstream",
+  "compatibility": {
+    "kubernetes": ">=1.31.0 <1.36.0"
+  },
+  "configuration": {
+    "schema": {
+      "type": "object",
+      "properties": {
+        "crds": {
+          "type": "object",
+          "properties": {
+            "install": {
+              "type": "boolean",
+              "default": true,
+              "title": "Install CRDs"
+            }
+          }
+        },
+        "operator": {
+          "type": "object",
+          "properties": {
+            "replicaCount": {
+              "type": "integer",
+              "default": 1,
+              "title": "Operator replicas",
+              "minimum": 0
+            }
+          }
+        },
+        "metricsServer": {
+          "type": "object",
+          "properties": {
+            "replicaCount": {
+              "type": "integer",
+              "default": 1,
+              "title": "Metrics server replicas",
+              "minimum": 0
+            }
+          }
+        },
+        "webhooks": {
+          "type": "object",
+          "properties": {
+            "replicaCount": {
+              "type": "integer",
+              "default": 1,
+              "title": "Webhook replicas",
+              "minimum": 0
+            }
+          }
+        },
+        "prometheus": {
+          "type": "object",
+          "properties": {
+            "operator": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean",
+                  "default": false,
+                  "title": "Operator metrics"
+                }
+              }
+            }
+          }
+        },
+        "resources": {
+          "type": "object",
+          "properties": {
+            "requests": {
+              "type": "object",
+              "title": "Requests",
+              "properties": {
+                "cpu": {
+                  "type": "string",
+                  "title": "CPU request",
+                  "pattern": "^([0-9]+(\\.[0-9]+)?([EPTGMK]i?|m)?|)$"
+                },
+                "memory": {
+                  "type": "string",
+                  "title": "Memory request",
+                  "pattern": "^([0-9]+(\\.[0-9]+)?([EPTGMK]i?|m)?|)$"
+                }
+              }
+            },
+            "limits": {
+              "type": "object",
+              "title": "Limits",
+              "properties": {
+                "cpu": {
+                  "type": "string",
+                  "title": "CPU limit",
+                  "pattern": "^([0-9]+(\\.[0-9]+)?([EPTGMK]i?|m)?|)$"
+                },
+                "memory": {
+                  "type": "string",
+                  "title": "Memory limit",
+                  "pattern": "^([0-9]+(\\.[0-9]+)?([EPTGMK]i?|m)?|)$"
+                }
+              }
+            }
+          },
+          "title": "Operator resources"
+        }
+      }
+    },
+    "presets": [
+      {
+        "id": "upstream",
+        "label": "Upstream defaults",
+        "description": "Start with the exact chart defaults; configure storage, exposure and secret references for your cluster.",
+        "values": {}
+      }
+    ],
+    "defaultPreset": "upstream",
+    "namespace": "astronomer-keda"
+  }
+}

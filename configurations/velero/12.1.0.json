@@ -1,0 +1,290 @@
+{
+  "version": "12.1.0",
+  "appVersion": "1.18.1",
+  "artifact": {
+    "type": "helm-http",
+    "repository": "vmware-tanzu",
+    "name": "velero",
+    "version": "12.1.0",
+    "digest": "sha256:cd23589ad1b2d25cdd3220f6866b3f6f4c5683c4c09494e76a14700b33f81f83"
+  },
+  "identities": {
+    "chartDigest": "sha256:cd23589ad1b2d25cdd3220f6866b3f6f4c5683c4c09494e76a14700b33f81f83"
+  },
+  "available": true,
+  "recommended": true,
+  "supportTier": "upstream",
+  "compatibility": {
+    "kubernetes": ">=1.31.0 <1.36.0"
+  },
+  "configuration": {
+    "schema": {
+      "type": "object",
+      "properties": {
+        "configuration": {
+          "type": "object",
+          "properties": {
+            "backupStorageLocation": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "default": null
+                  },
+                  "provider": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "bucket": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "caCert": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "default": null
+                  },
+                  "prefix": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "default": null
+                  },
+                  "default": {
+                    "type": "boolean",
+                    "default": false
+                  },
+                  "validationFrequency": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "default": null
+                  },
+                  "backupSyncPeriod": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "default": null
+                  },
+                  "accessMode": {
+                    "type": "string",
+                    "default": "ReadWrite"
+                  },
+                  "credential": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "default": null
+                      },
+                      "key": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "default": null
+                      }
+                    }
+                  },
+                  "config": {
+                    "type": "object",
+                    "properties": {}
+                  },
+                  "annotations": {
+                    "type": "object",
+                    "properties": {}
+                  }
+                }
+              },
+              "default": [
+                {
+                  "name": null,
+                  "provider": "",
+                  "bucket": "",
+                  "caCert": null,
+                  "prefix": null,
+                  "default": false,
+                  "validationFrequency": null,
+                  "backupSyncPeriod": null,
+                  "accessMode": "ReadWrite",
+                  "credential": {
+                    "name": null,
+                    "key": null
+                  },
+                  "config": {},
+                  "annotations": {}
+                }
+              ],
+              "title": "Backup storage locations"
+            },
+            "volumeSnapshotLocation": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "default": null
+                  },
+                  "provider": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "credential": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "default": null
+                      },
+                      "key": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "default": null
+                      }
+                    }
+                  },
+                  "config": {
+                    "type": "object",
+                    "properties": {}
+                  },
+                  "annotations": {
+                    "type": "object",
+                    "properties": {}
+                  }
+                }
+              },
+              "default": [
+                {
+                  "name": null,
+                  "provider": "",
+                  "credential": {
+                    "name": null,
+                    "key": null
+                  },
+                  "config": {},
+                  "annotations": {}
+                }
+              ],
+              "title": "Snapshot locations"
+            }
+          }
+        },
+        "credentials": {
+          "type": "object",
+          "properties": {
+            "existingSecret": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "default": null,
+              "title": "Credential Secret"
+            }
+          }
+        },
+        "backupsEnabled": {
+          "type": "boolean",
+          "default": true,
+          "title": "Enable backups",
+          "description": "Requires at least one backup storage location. Disable this and snapshots to run an explicit node-agent-only deployment."
+        },
+        "deployNodeAgent": {
+          "type": "boolean",
+          "default": false,
+          "title": "Deploy node agent",
+          "description": "Runs filesystem data-movement agents on cluster nodes, including in node-agent-only deployments."
+        },
+        "snapshotsEnabled": {
+          "type": "boolean",
+          "default": true,
+          "title": "Enable snapshots"
+        },
+        "metrics": {
+          "type": "object",
+          "properties": {
+            "serviceMonitor": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean",
+                  "default": false,
+                  "title": "Create ServiceMonitor"
+                }
+              }
+            }
+          }
+        },
+        "resources": {
+          "type": "object",
+          "properties": {
+            "requests": {
+              "type": "object",
+              "title": "Requests",
+              "properties": {
+                "cpu": {
+                  "type": "string",
+                  "title": "CPU request",
+                  "pattern": "^([0-9]+(\\.[0-9]+)?([EPTGMK]i?|m)?|)$"
+                },
+                "memory": {
+                  "type": "string",
+                  "title": "Memory request",
+                  "pattern": "^([0-9]+(\\.[0-9]+)?([EPTGMK]i?|m)?|)$"
+                }
+              }
+            },
+            "limits": {
+              "type": "object",
+              "title": "Limits",
+              "properties": {
+                "cpu": {
+                  "type": "string",
+                  "title": "CPU limit",
+                  "pattern": "^([0-9]+(\\.[0-9]+)?([EPTGMK]i?|m)?|)$"
+                },
+                "memory": {
+                  "type": "string",
+                  "title": "Memory limit",
+                  "pattern": "^([0-9]+(\\.[0-9]+)?([EPTGMK]i?|m)?|)$"
+                }
+              }
+            }
+          },
+          "title": "Server resources"
+        }
+      }
+    },
+    "presets": [
+      {
+        "id": "upstream",
+        "label": "Upstream defaults",
+        "description": "Start with the exact chart defaults; configure storage, exposure and secret references for your cluster.",
+        "values": {}
+      }
+    ],
+    "defaultPreset": "upstream",
+    "namespace": "velero"
+  }
+}

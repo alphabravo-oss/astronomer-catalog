@@ -1,0 +1,133 @@
+{
+  "version": "v1.21.1",
+  "appVersion": "v1.21.1",
+  "artifact": {
+    "type": "helm-http",
+    "repository": "jetstack",
+    "name": "cert-manager",
+    "version": "v1.21.1",
+    "digest": "sha256:c27101f3f3e2349fb4a9e704316105bf7b52ad73b8c8257d3498ef7f2f6a4adc"
+  },
+  "identities": {
+    "chartDigest": "sha256:c27101f3f3e2349fb4a9e704316105bf7b52ad73b8c8257d3498ef7f2f6a4adc"
+  },
+  "available": true,
+  "recommended": true,
+  "supportTier": "upstream",
+  "compatibility": {
+    "kubernetes": ">=1.31.0 <1.36.0"
+  },
+  "configuration": {
+    "schema": {
+      "type": "object",
+      "properties": {
+        "crds": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": false,
+              "title": "Install CRDs"
+            }
+          }
+        },
+        "replicaCount": {
+          "type": "integer",
+          "default": 1,
+          "title": "Controller replicas",
+          "minimum": 0
+        },
+        "webhook": {
+          "type": "object",
+          "properties": {
+            "replicaCount": {
+              "type": "integer",
+              "default": 1,
+              "title": "Webhook replicas",
+              "minimum": 0
+            }
+          }
+        },
+        "cainjector": {
+          "type": "object",
+          "properties": {
+            "replicaCount": {
+              "type": "integer",
+              "default": 1,
+              "title": "CA injector replicas",
+              "minimum": 0
+            }
+          }
+        },
+        "prometheus": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": true,
+              "title": "Expose Prometheus metrics"
+            }
+          }
+        },
+        "startupapicheck": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": true,
+              "title": "Run startup API check"
+            }
+          }
+        },
+        "resources": {
+          "type": "object",
+          "properties": {
+            "requests": {
+              "type": "object",
+              "title": "Requests",
+              "properties": {
+                "cpu": {
+                  "type": "string",
+                  "title": "CPU request",
+                  "pattern": "^([0-9]+(\\.[0-9]+)?([EPTGMK]i?|m)?|)$"
+                },
+                "memory": {
+                  "type": "string",
+                  "title": "Memory request",
+                  "pattern": "^([0-9]+(\\.[0-9]+)?([EPTGMK]i?|m)?|)$"
+                }
+              }
+            },
+            "limits": {
+              "type": "object",
+              "title": "Limits",
+              "properties": {
+                "cpu": {
+                  "type": "string",
+                  "title": "CPU limit",
+                  "pattern": "^([0-9]+(\\.[0-9]+)?([EPTGMK]i?|m)?|)$"
+                },
+                "memory": {
+                  "type": "string",
+                  "title": "Memory limit",
+                  "pattern": "^([0-9]+(\\.[0-9]+)?([EPTGMK]i?|m)?|)$"
+                }
+              }
+            }
+          },
+          "title": "Controller resources"
+        }
+      }
+    },
+    "presets": [
+      {
+        "id": "upstream",
+        "label": "Upstream defaults",
+        "description": "Start with the exact chart defaults; configure storage, exposure and secret references for your cluster.",
+        "values": {}
+      }
+    ],
+    "defaultPreset": "upstream",
+    "namespace": "astronomer-cert-manager"
+  }
+}

@@ -1,0 +1,242 @@
+[
+  {
+    "chart": "cert-manager",
+    "version": "v1.21.1",
+    "preset": "upstream",
+    "chartDigest": "sha256:c27101f3f3e2349fb4a9e704316105bf7b52ad73b8c8257d3498ef7f2f6a4adc",
+    "kubernetes": "1.31.0",
+    "status": "pass",
+    "renderDigest": "sha256:324bddb0ca2ab23663a828269e09b72e52666a6d5ff824ed3b5f72e0cce3b2c2",
+    "diagnostic": ""
+  },
+  {
+    "chart": "cloudnative-pg",
+    "version": "0.29.0",
+    "preset": "upstream",
+    "chartDigest": "sha256:668e065ff53508d58238788fd35b355a925060843629a951df0e6a9362e6d32f",
+    "kubernetes": "1.31.0",
+    "status": "pass",
+    "renderDigest": "sha256:4a8260a420e94e05b810819bef8f9dbca1c46b9a944b1577949b991ccc122e5c",
+    "diagnostic": ""
+  },
+  {
+    "chart": "constellation",
+    "version": "0.2.0",
+    "preset": "upstream",
+    "chartDigest": "sha256:ea0d90ca7a7f7bb6d2ffaa466f925b96d2cae5b3d95728603d17ece12d72ee46",
+    "kubernetes": "1.31.0",
+    "status": "pass",
+    "renderDigest": "sha256:2b997c315d534ca0bda3b641452cbe926af41f0b35633329acfcbefd9ffc0f37",
+    "diagnostic": ""
+  },
+  {
+    "chart": "external-dns",
+    "version": "1.21.1",
+    "preset": "upstream",
+    "chartDigest": "sha256:5dd033a4b872bf641860695705ee460031d0bc695f114bf8926fee6736814e19",
+    "kubernetes": "1.31.0",
+    "status": "pass",
+    "renderDigest": "sha256:84f6de29de7f40f676324fb3cbd1707a38ab062121a45cadc16cbcc3f51060c2",
+    "diagnostic": ""
+  },
+  {
+    "chart": "external-secrets",
+    "version": "2.9.0",
+    "preset": "upstream",
+    "chartDigest": "sha256:da2d5c126a103b4c1b16a9dc1c168c4332a3687144e88ac070e594f81a0b6578",
+    "kubernetes": "1.31.0",
+    "status": "pass",
+    "renderDigest": "sha256:7dc7a0a875353a63770a68fdfe16219eb4eb273b61a0f61550509cbd39bf866a",
+    "diagnostic": ""
+  },
+  {
+    "chart": "fluent-bit",
+    "version": "0.58.1",
+    "preset": "upstream",
+    "chartDigest": "sha256:fc2235278cdb4e76befb8520464a66ff459c6d7711bbbc8755dedcc32799877b",
+    "kubernetes": "1.31.0",
+    "status": "pass",
+    "renderDigest": "sha256:22902229f3a55ba8056d54231e8f3deba0e7416fd65664b29b12921637832b95",
+    "diagnostic": ""
+  },
+  {
+    "chart": "gatekeeper",
+    "version": "3.23.0",
+    "preset": "upstream",
+    "chartDigest": "sha256:33f018bca8b875a9e01f447efef09414609d0d38185101207a4a6d655fe3d2a0",
+    "kubernetes": "1.31.0",
+    "status": "pass",
+    "renderDigest": "sha256:b963b89bf85ab692856d555f2a266b9049e1c647cc8a8f6a1c5c0ecfffaf0690",
+    "diagnostic": ""
+  },
+  {
+    "chart": "grafana",
+    "version": "10.5.15",
+    "preset": "upstream",
+    "chartDigest": "sha256:c08c87969270402e7d5227edb8385af67cc32ee34817bff89773ad02303b5d79",
+    "kubernetes": "1.31.0",
+    "status": "pass",
+    "renderDigest": "sha256:e374fcdd15b9d52cbbb1aa006f03df7f23da4b1508687f0762724382d67df73d",
+    "diagnostic": "WARNING: This chart is deprecated\n"
+  },
+  {
+    "chart": "ingress-nginx",
+    "version": "4.15.1",
+    "preset": "upstream",
+    "chartDigest": "sha256:3eff0bd18151d6e6b1c441463410571443dda1ac78292cb189346628de784f0c",
+    "kubernetes": "1.31.0",
+    "status": "pass",
+    "renderDigest": "sha256:48fab24869d1bee7b375cc11c293d84e1b40eebb3ed2896dd1c4fe40040121f2",
+    "diagnostic": ""
+  },
+  {
+    "chart": "keda",
+    "version": "2.20.2",
+    "preset": "upstream",
+    "chartDigest": "sha256:db60b1fa60f0565fefa4ce2f87e855b6a8854363ee82962fbe28a12a70d64c4c",
+    "kubernetes": "1.31.0",
+    "status": "pass",
+    "renderDigest": "sha256:16d8899fc7f3d893657134f1021b4664458a75d5efd5dc11d563f3dbe0133bee",
+    "diagnostic": ""
+  },
+  {
+    "chart": "kube-prometheus-stack",
+    "version": "88.5.4",
+    "preset": "standard",
+    "chartDigest": "sha256:c17a08afbbaa8577b5bdc990511b3cf1a3a37ae76ce5817e7478300f9933749b",
+    "kubernetes": "1.31.0",
+    "status": "pass",
+    "renderDigest": "sha256:172a0ce547678abd0ec2b9777a690de051e03eece30e0cf4c032373de8058c09",
+    "diagnostic": ""
+  },
+  {
+    "chart": "kube-prometheus-stack",
+    "version": "88.5.4",
+    "preset": "persistent",
+    "chartDigest": "sha256:c17a08afbbaa8577b5bdc990511b3cf1a3a37ae76ce5817e7478300f9933749b",
+    "kubernetes": "1.31.0",
+    "status": "pass",
+    "renderDigest": "sha256:84c4fe3d44fafea828b88f99b230f58f921676e14914412e502010e962fa6c4b",
+    "diagnostic": ""
+  },
+  {
+    "chart": "kube-state-metrics",
+    "version": "8.4.0",
+    "preset": "upstream",
+    "chartDigest": "sha256:74cc198067993744791e92ee280d8f255a0bbd43c86d765814402c455d478680",
+    "kubernetes": "1.31.0",
+    "status": "pass",
+    "renderDigest": "sha256:5bbda8aa68c0e587c0cb26d11dd783f146adf1b1ca200b4dfc1710db87bb5162",
+    "diagnostic": ""
+  },
+  {
+    "chart": "kyverno",
+    "version": "3.9.0",
+    "preset": "upstream",
+    "chartDigest": "sha256:9663e8d3d15b070e5925b4f26b3f9a8824872a42ac7bf27ca105c897cb5aba51",
+    "kubernetes": "1.31.0",
+    "status": "pass",
+    "renderDigest": "sha256:9706908abea7a67bab16676c91efa3c9295df360c054e48ee78146403a6ecff3",
+    "diagnostic": ""
+  },
+  {
+    "chart": "loki",
+    "version": "7.3.0",
+    "preset": "evaluation",
+    "chartDigest": "sha256:04a339f712d770a1f599f05fc0a5a3cde18e43914e49ae6a49f7171be86bcc09",
+    "kubernetes": "1.31.0",
+    "status": "pass",
+    "renderDigest": "sha256:aa18669e68efeeb9c844c6455049381a9c6570eb46933cf30c5011470f899cdf",
+    "diagnostic": ""
+  },
+  {
+    "chart": "loki",
+    "version": "7.3.0",
+    "preset": "persistent",
+    "chartDigest": "sha256:04a339f712d770a1f599f05fc0a5a3cde18e43914e49ae6a49f7171be86bcc09",
+    "kubernetes": "1.31.0",
+    "status": "pass",
+    "renderDigest": "sha256:fabd50baa2b6f739e104196472e8e642d8e2d4155ed490d247b98cf398c732fa",
+    "diagnostic": ""
+  },
+  {
+    "chart": "longhorn",
+    "version": "1.12.1",
+    "preset": "replicated",
+    "chartDigest": "sha256:c8cf4b35a9d872cd5f7e44fd26d8e6ac7c2abaee42f4e2f2a0b0ebbc6e3a6116",
+    "kubernetes": "1.31.0",
+    "status": "pass",
+    "renderDigest": "sha256:5069a7f39357dcf34418def760656f777c64637f7eb591c0849931734e0da662",
+    "diagnostic": ""
+  },
+  {
+    "chart": "longhorn",
+    "version": "1.12.1",
+    "preset": "evaluation",
+    "chartDigest": "sha256:c8cf4b35a9d872cd5f7e44fd26d8e6ac7c2abaee42f4e2f2a0b0ebbc6e3a6116",
+    "kubernetes": "1.31.0",
+    "status": "pass",
+    "renderDigest": "sha256:b319b8ff61cfd59be6339cf37b03bb60e4fb88f205ddf928effa02fff4d92f4c",
+    "diagnostic": ""
+  },
+  {
+    "chart": "metrics-server",
+    "version": "3.14.0",
+    "preset": "upstream",
+    "chartDigest": "sha256:c2ca1185c01e6e7f53dd1b7d131f0c9b3fa50e003ed068b784563a1b5a3422a1",
+    "kubernetes": "1.31.0",
+    "status": "pass",
+    "renderDigest": "sha256:13c1e48c4e2edbfc66b81019b55d188bfd0a9a9e6cfe96f209358b9fdd3f2860",
+    "diagnostic": ""
+  },
+  {
+    "chart": "opentelemetry-collector",
+    "version": "0.171.0",
+    "preset": "deployment",
+    "chartDigest": "sha256:5526010c00b6319ced10dd9e711149b10d5539dfa1e23ee22546648f7f702352",
+    "kubernetes": "1.31.0",
+    "status": "pass",
+    "renderDigest": "sha256:9430489dac8f7adbe4d9be0972430907abe157166b7786c9a0925f05464e99aa",
+    "diagnostic": ""
+  },
+  {
+    "chart": "prometheus-node-exporter",
+    "version": "4.56.1",
+    "preset": "upstream",
+    "chartDigest": "sha256:70fab291e00a34c58fd943bb075fecc2e2e73fa95db1bcbbe7cdfe008795354a",
+    "kubernetes": "1.31.0",
+    "status": "pass",
+    "renderDigest": "sha256:94333fe2fb8cac23572215a209c4101dfe7034f03ddef80437534329f48db3fe",
+    "diagnostic": ""
+  },
+  {
+    "chart": "tempo",
+    "version": "1.24.4",
+    "preset": "upstream",
+    "chartDigest": "sha256:f1f6e318d5bca3b5097cb676077796cdf8135beb2c1f71c4d14614ccf9b0081b",
+    "kubernetes": "1.31.0",
+    "status": "pass",
+    "renderDigest": "sha256:5d23e76c3a46d3dbfb678434175be8c04ae713296e0b48800901efa2f81aa875",
+    "diagnostic": "WARNING: This chart is deprecated\n"
+  },
+  {
+    "chart": "trivy-operator",
+    "version": "0.36.0",
+    "preset": "upstream",
+    "chartDigest": "sha256:bb0c44bc70e3158cc63ea49d7458ede6db5b6c932f6585a2d787eb9712fd4288",
+    "kubernetes": "1.31.0",
+    "status": "pass",
+    "renderDigest": "sha256:7d29cd739f7a6ee3c0e4f72655e2c00d4c444476764b92afcd03cb7e1f501d56",
+    "diagnostic": ""
+  },
+  {
+    "chart": "velero",
+    "version": "12.1.0",
+    "preset": "upstream",
+    "chartDigest": "sha256:cd23589ad1b2d25cdd3220f6866b3f6f4c5683c4c09494e76a14700b33f81f83",
+    "kubernetes": "1.31.0",
+    "status": "pass",
+    "renderDigest": "sha256:265bdf0a1e5470b0d9e14b67cd3c937bb3af88abc42795c087b20aae2c2f1421",
+    "diagnostic": ""
+  }
+]

@@ -1,0 +1,125 @@
+{
+  "version": "0.36.0",
+  "appVersion": "0.34.0",
+  "artifact": {
+    "type": "helm-http",
+    "repository": "aqua",
+    "name": "trivy-operator",
+    "version": "0.36.0",
+    "digest": "sha256:bb0c44bc70e3158cc63ea49d7458ede6db5b6c932f6585a2d787eb9712fd4288"
+  },
+  "identities": {
+    "chartDigest": "sha256:bb0c44bc70e3158cc63ea49d7458ede6db5b6c932f6585a2d787eb9712fd4288"
+  },
+  "available": true,
+  "recommended": true,
+  "supportTier": "upstream",
+  "compatibility": {
+    "kubernetes": ">=1.31.0 <1.36.0"
+  },
+  "configuration": {
+    "schema": {
+      "type": "object",
+      "properties": {
+        "operator": {
+          "type": "object",
+          "properties": {
+            "scanJobTimeout": {
+              "type": "string",
+              "default": "5m",
+              "title": "Scan job timeout"
+            },
+            "scanJobsConcurrentLimit": {
+              "type": "integer",
+              "default": 10,
+              "title": "Concurrent scan jobs"
+            },
+            "vulnerabilityScannerEnabled": {
+              "type": "boolean",
+              "default": true,
+              "title": "Vulnerability scanner"
+            },
+            "configAuditScannerEnabled": {
+              "type": "boolean",
+              "default": true,
+              "title": "Configuration audit scanner"
+            }
+          }
+        },
+        "trivy": {
+          "type": "object",
+          "properties": {
+            "severity": {
+              "type": "string",
+              "default": "UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL",
+              "title": "Reported severities"
+            },
+            "ignoreUnfixed": {
+              "type": "boolean",
+              "default": false,
+              "title": "Ignore unfixed vulnerabilities"
+            }
+          }
+        },
+        "serviceMonitor": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": false,
+              "title": "Create ServiceMonitor"
+            }
+          }
+        },
+        "resources": {
+          "type": "object",
+          "properties": {
+            "requests": {
+              "type": "object",
+              "title": "Requests",
+              "properties": {
+                "cpu": {
+                  "type": "string",
+                  "title": "CPU request",
+                  "pattern": "^([0-9]+(\\.[0-9]+)?([EPTGMK]i?|m)?|)$"
+                },
+                "memory": {
+                  "type": "string",
+                  "title": "Memory request",
+                  "pattern": "^([0-9]+(\\.[0-9]+)?([EPTGMK]i?|m)?|)$"
+                }
+              }
+            },
+            "limits": {
+              "type": "object",
+              "title": "Limits",
+              "properties": {
+                "cpu": {
+                  "type": "string",
+                  "title": "CPU limit",
+                  "pattern": "^([0-9]+(\\.[0-9]+)?([EPTGMK]i?|m)?|)$"
+                },
+                "memory": {
+                  "type": "string",
+                  "title": "Memory limit",
+                  "pattern": "^([0-9]+(\\.[0-9]+)?([EPTGMK]i?|m)?|)$"
+                }
+              }
+            }
+          },
+          "title": "Resources"
+        }
+      }
+    },
+    "presets": [
+      {
+        "id": "upstream",
+        "label": "Upstream defaults",
+        "description": "Start with the exact chart defaults; configure storage, exposure and secret references for your cluster.",
+        "values": {}
+      }
+    ],
+    "defaultPreset": "upstream",
+    "namespace": "astronomer-trivy-system"
+  }
+}

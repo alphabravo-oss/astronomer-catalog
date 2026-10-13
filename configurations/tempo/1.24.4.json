@@ -1,0 +1,148 @@
+{
+  "version": "1.24.4",
+  "appVersion": "2.9.0",
+  "artifact": {
+    "type": "helm-http",
+    "repository": "grafana",
+    "name": "tempo",
+    "version": "1.24.4",
+    "digest": "sha256:f1f6e318d5bca3b5097cb676077796cdf8135beb2c1f71c4d14614ccf9b0081b"
+  },
+  "identities": {
+    "chartDigest": "sha256:f1f6e318d5bca3b5097cb676077796cdf8135beb2c1f71c4d14614ccf9b0081b"
+  },
+  "available": true,
+  "recommended": true,
+  "supportTier": "upstream",
+  "compatibility": {
+    "kubernetes": ">=1.31.0 <1.36.0"
+  },
+  "configuration": {
+    "schema": {
+      "type": "object",
+      "properties": {
+        "tempo": {
+          "type": "object",
+          "properties": {
+            "retention": {
+              "type": "string",
+              "default": "24h",
+              "title": "Trace retention"
+            },
+            "storage": {
+              "type": "object",
+              "properties": {
+                "trace": {
+                  "type": "object",
+                  "properties": {
+                    "backend": {
+                      "type": "string",
+                      "default": "local"
+                    },
+                    "local": {
+                      "type": "object",
+                      "properties": {
+                        "path": {
+                          "type": "string",
+                          "default": "/var/tempo/traces"
+                        }
+                      }
+                    },
+                    "wal": {
+                      "type": "object",
+                      "properties": {
+                        "path": {
+                          "type": "string",
+                          "default": "/var/tempo/wal"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "title": "Trace storage"
+            },
+            "resources": {
+              "type": "object",
+              "properties": {
+                "requests": {
+                  "type": "object",
+                  "title": "Requests",
+                  "properties": {
+                    "cpu": {
+                      "type": "string",
+                      "title": "CPU request",
+                      "pattern": "^([0-9]+(\\.[0-9]+)?([EPTGMK]i?|m)?|)$"
+                    },
+                    "memory": {
+                      "type": "string",
+                      "title": "Memory request",
+                      "pattern": "^([0-9]+(\\.[0-9]+)?([EPTGMK]i?|m)?|)$"
+                    }
+                  }
+                },
+                "limits": {
+                  "type": "object",
+                  "title": "Limits",
+                  "properties": {
+                    "cpu": {
+                      "type": "string",
+                      "title": "CPU limit",
+                      "pattern": "^([0-9]+(\\.[0-9]+)?([EPTGMK]i?|m)?|)$"
+                    },
+                    "memory": {
+                      "type": "string",
+                      "title": "Memory limit",
+                      "pattern": "^([0-9]+(\\.[0-9]+)?([EPTGMK]i?|m)?|)$"
+                    }
+                  }
+                }
+              },
+              "title": "Tempo resources"
+            }
+          }
+        },
+        "persistence": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": false,
+              "title": "Enable persistence"
+            },
+            "storageClassName": {
+              "type": "string",
+              "title": "StorageClass",
+              "x-astronomer-resource": "storageclasses"
+            },
+            "size": {
+              "type": "string",
+              "default": "10Gi",
+              "title": "Volume size"
+            }
+          }
+        },
+        "serviceMonitor": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": false,
+              "title": "Create ServiceMonitor"
+            }
+          }
+        }
+      }
+    },
+    "presets": [
+      {
+        "id": "upstream",
+        "label": "Upstream defaults",
+        "description": "Start with the exact chart defaults; configure storage, exposure and secret references for your cluster.",
+        "values": {}
+      }
+    ],
+    "defaultPreset": "upstream",
+    "namespace": "astronomer-tempo"
+  }
+}

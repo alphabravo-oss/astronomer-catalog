@@ -1,0 +1,342 @@
+{
+  "version": "0.2.0",
+  "appVersion": "0.2.0",
+  "artifact": {
+    "type": "helm-http",
+    "repository": "astronomer-first-party",
+    "name": "constellation",
+    "version": "0.2.0",
+    "digest": "sha256:ea0d90ca7a7f7bb6d2ffaa466f925b96d2cae5b3d95728603d17ece12d72ee46"
+  },
+  "identities": {
+    "chartDigest": "sha256:ea0d90ca7a7f7bb6d2ffaa466f925b96d2cae5b3d95728603d17ece12d72ee46"
+  },
+  "available": true,
+  "recommended": true,
+  "supportTier": "experimental",
+  "compatibility": {
+    "kubernetes": ">=1.27.0 <1.36.0"
+  },
+  "configuration": {
+    "schema": {
+      "type": "object",
+      "properties": {
+        "image": {
+          "type": "object",
+          "properties": {
+            "tag": {
+              "type": "string",
+              "default": "",
+              "title": "Image tag",
+              "description": "Release tag used for every Constellation component unless a role overrides it."
+            }
+          }
+        },
+        "highAvailability": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": false,
+              "title": "Enable high availability"
+            },
+            "topologyKey": {
+              "type": "string",
+              "default": "kubernetes.io/hostname",
+              "title": "Topology key"
+            },
+            "whenUnsatisfiable": {
+              "type": "string",
+              "default": "DoNotSchedule",
+              "title": "Scheduling policy"
+            }
+          }
+        },
+        "networkPolicies": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": false,
+              "title": "Enable network policies"
+            }
+          }
+        },
+        "api": {
+          "type": "object",
+          "properties": {
+            "replicas": {
+              "type": "integer",
+              "default": 2,
+              "title": "API replicas",
+              "minimum": 0
+            }
+          }
+        },
+        "scanner": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": true,
+              "title": "Enable scanner"
+            },
+            "replicas": {
+              "type": "integer",
+              "default": 2,
+              "title": "Scanner replicas",
+              "minimum": 0
+            },
+            "maxConcurrent": {
+              "type": "integer",
+              "default": 1,
+              "title": "Concurrent scans per replica"
+            },
+            "cache": {
+              "type": "object",
+              "properties": {
+                "persistent": {
+                  "type": "boolean",
+                  "default": true,
+                  "title": "Persist scanner cache"
+                },
+                "size": {
+                  "type": "string",
+                  "default": "8Gi",
+                  "title": "Scanner cache size"
+                },
+                "storageClass": {
+                  "type": "string",
+                  "default": "",
+                  "title": "Scanner cache StorageClass",
+                  "x-astronomer-resource": "storageclasses"
+                }
+              }
+            },
+            "engines": {
+              "type": "object",
+              "properties": {
+                "syft": {
+                  "type": "boolean",
+                  "default": true,
+                  "title": "Enable Syft"
+                },
+                "trivy": {
+                  "type": "boolean",
+                  "default": true,
+                  "title": "Enable Trivy"
+                },
+                "grype": {
+                  "type": "boolean",
+                  "default": true,
+                  "title": "Enable Grype"
+                }
+              }
+            }
+          }
+        },
+        "runtimeAgent": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": true,
+              "title": "Enable runtime agent"
+            },
+            "enforcement": {
+              "type": "object",
+              "properties": {
+                "mode": {
+                  "type": "string",
+                  "default": "monitor",
+                  "title": "Runtime enforcement mode"
+                },
+                "network": {
+                  "type": "boolean",
+                  "default": false,
+                  "title": "Enforce network activity"
+                },
+                "dpi": {
+                  "type": "boolean",
+                  "default": false,
+                  "title": "Enable deep packet inspection"
+                }
+              }
+            }
+          }
+        },
+        "admission": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": true,
+              "title": "Enable admission controller"
+            },
+            "replicas": {
+              "type": "integer",
+              "default": 2,
+              "title": "Admission replicas",
+              "minimum": 0
+            },
+            "webhook": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean",
+                  "default": true,
+                  "title": "Enable admission webhook"
+                },
+                "failurePolicy": {
+                  "type": "string",
+                  "default": "Ignore",
+                  "title": "Webhook failure policy"
+                },
+                "timeoutSeconds": {
+                  "type": "integer",
+                  "default": 5,
+                  "title": "Webhook timeout"
+                }
+              }
+            }
+          }
+        },
+        "frontend": {
+          "type": "object",
+          "properties": {
+            "replicas": {
+              "type": "integer",
+              "default": 2,
+              "title": "Web console replicas",
+              "minimum": 0
+            }
+          }
+        },
+        "ingress": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": false,
+              "title": "Enable Ingress"
+            },
+            "className": {
+              "type": "string",
+              "default": "",
+              "title": "Ingress class"
+            },
+            "host": {
+              "type": "string",
+              "default": "constellation.example.com",
+              "title": "Ingress host"
+            },
+            "tls": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean",
+                  "default": false,
+                  "title": "Enable Ingress TLS"
+                },
+                "secretName": {
+                  "type": "string",
+                  "default": "constellation-frontend-tls",
+                  "title": "Ingress TLS Secret"
+                }
+              }
+            }
+          }
+        },
+        "postgres": {
+          "type": "object",
+          "properties": {
+            "mode": {
+              "type": "string",
+              "default": "",
+              "title": "PostgreSQL mode"
+            },
+            "existingSecret": {
+              "type": "string",
+              "default": "",
+              "title": "Existing PostgreSQL Secret",
+              "x-astronomer-resource": "secrets"
+            },
+            "embeddedConfig": {
+              "type": "object",
+              "properties": {
+                "storage": {
+                  "type": "string",
+                  "default": "20Gi",
+                  "title": "Embedded database storage",
+                  "pattern": "^([0-9]+(\\.[0-9]+)?([EPTGMK]i?|m)?|)$"
+                },
+                "storageClass": {
+                  "type": "string",
+                  "default": "",
+                  "title": "Database StorageClass",
+                  "x-astronomer-resource": "storageclasses"
+                }
+              }
+            },
+            "cloudnativepg": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean",
+                  "default": false,
+                  "title": "Use CloudNativePG"
+                },
+                "instances": {
+                  "type": "integer",
+                  "default": 3,
+                  "title": "CloudNativePG instances"
+                },
+                "storage": {
+                  "type": "string",
+                  "default": "20Gi",
+                  "title": "CloudNativePG storage",
+                  "pattern": "^([0-9]+(\\.[0-9]+)?([EPTGMK]i?|m)?|)$"
+                }
+              }
+            }
+          }
+        },
+        "tls": {
+          "type": "object",
+          "properties": {
+            "certManager": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean",
+                  "default": false,
+                  "title": "Use cert-manager for admission TLS"
+                },
+                "issuer": {
+                  "type": "string",
+                  "default": "",
+                  "title": "Certificate issuer"
+                },
+                "issuerKind": {
+                  "type": "string",
+                  "default": "ClusterIssuer",
+                  "title": "Certificate issuer kind"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "presets": [
+      {
+        "id": "upstream",
+        "label": "Upstream defaults",
+        "description": "Start with the exact chart defaults; configure storage, exposure and secret references for your cluster.",
+        "values": {}
+      }
+    ],
+    "defaultPreset": "upstream",
+    "namespace": "astronomer-constellation"
+  }
+}

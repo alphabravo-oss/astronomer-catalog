@@ -1,0 +1,448 @@
+{
+  "version": "0.171.0",
+  "appVersion": "0.158.0",
+  "artifact": {
+    "type": "helm-http",
+    "repository": "open-telemetry",
+    "name": "opentelemetry-collector",
+    "version": "0.171.0",
+    "digest": "sha256:5526010c00b6319ced10dd9e711149b10d5539dfa1e23ee22546648f7f702352"
+  },
+  "identities": {
+    "chartDigest": "sha256:5526010c00b6319ced10dd9e711149b10d5539dfa1e23ee22546648f7f702352"
+  },
+  "available": true,
+  "recommended": true,
+  "supportTier": "upstream",
+  "compatibility": {
+    "kubernetes": ">=1.31.0 <1.36.0"
+  },
+  "configuration": {
+    "schema": {
+      "type": "object",
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": [
+            "daemonset",
+            "deployment",
+            "statefulset"
+          ],
+          "title": "Deployment mode"
+        },
+        "image": {
+          "type": "object",
+          "properties": {
+            "repository": {
+              "type": "string",
+              "minLength": 1,
+              "title": "Collector image repository",
+              "description": "Required by this chart. Choose the core or contrib collector image that provides the components used by the pipeline."
+            }
+          }
+        },
+        "replicaCount": {
+          "type": "integer",
+          "default": 1,
+          "title": "Replicas",
+          "minimum": 0
+        },
+        "config": {
+          "type": "object",
+          "properties": {
+            "receivers": {
+              "type": "object",
+              "properties": {
+                "jaeger": {
+                  "type": "object",
+                  "properties": {
+                    "protocols": {
+                      "type": "object",
+                      "properties": {
+                        "grpc": {
+                          "type": "object",
+                          "properties": {
+                            "endpoint": {
+                              "type": "string",
+                              "default": "${env:MY_POD_IP}:14250"
+                            }
+                          }
+                        },
+                        "thrift_http": {
+                          "type": "object",
+                          "properties": {
+                            "endpoint": {
+                              "type": "string",
+                              "default": "${env:MY_POD_IP}:14268"
+                            }
+                          }
+                        },
+                        "thrift_compact": {
+                          "type": "object",
+                          "properties": {
+                            "endpoint": {
+                              "type": "string",
+                              "default": "${env:MY_POD_IP}:6831"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "otlp": {
+                  "type": "object",
+                  "properties": {
+                    "protocols": {
+                      "type": "object",
+                      "properties": {
+                        "grpc": {
+                          "type": "object",
+                          "properties": {
+                            "endpoint": {
+                              "type": "string",
+                              "default": "${env:MY_POD_IP}:4317"
+                            }
+                          }
+                        },
+                        "http": {
+                          "type": "object",
+                          "properties": {
+                            "endpoint": {
+                              "type": "string",
+                              "default": "${env:MY_POD_IP}:4318"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "prometheus": {
+                  "type": "object",
+                  "properties": {
+                    "config": {
+                      "type": "object",
+                      "properties": {
+                        "scrape_configs": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "job_name": {
+                                "type": "string",
+                                "default": "opentelemetry-collector"
+                              },
+                              "scrape_interval": {
+                                "type": "string",
+                                "default": "10s"
+                              },
+                              "static_configs": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "targets": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "string",
+                                        "default": "${env:MY_POD_IP}:8888"
+                                      },
+                                      "default": [
+                                        "${env:MY_POD_IP}:8888"
+                                      ]
+                                    }
+                                  }
+                                },
+                                "default": [
+                                  {
+                                    "targets": [
+                                      "${env:MY_POD_IP}:8888"
+                                    ]
+                                  }
+                                ]
+                              }
+                            }
+                          },
+                          "default": [
+                            {
+                              "job_name": "opentelemetry-collector",
+                              "scrape_interval": "10s",
+                              "static_configs": [
+                                {
+                                  "targets": [
+                                    "${env:MY_POD_IP}:8888"
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                },
+                "zipkin": {
+                  "type": "object",
+                  "properties": {
+                    "endpoint": {
+                      "type": "string",
+                      "default": "${env:MY_POD_IP}:9411"
+                    }
+                  }
+                }
+              },
+              "title": "Receivers"
+            },
+            "processors": {
+              "type": "object",
+              "properties": {
+                "batch": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "memory_limiter": {
+                  "type": "object",
+                  "properties": {
+                    "check_interval": {
+                      "type": "string",
+                      "default": "5s"
+                    },
+                    "limit_percentage": {
+                      "type": "integer",
+                      "default": 80
+                    },
+                    "spike_limit_percentage": {
+                      "type": "integer",
+                      "default": 25
+                    }
+                  }
+                }
+              },
+              "title": "Processors"
+            },
+            "exporters": {
+              "type": "object",
+              "properties": {
+                "debug": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "title": "Exporters"
+            },
+            "service": {
+              "type": "object",
+              "properties": {
+                "pipelines": {
+                  "type": "object",
+                  "properties": {
+                    "logs": {
+                      "type": "object",
+                      "properties": {
+                        "exporters": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "default": "debug"
+                          },
+                          "default": [
+                            "debug"
+                          ]
+                        },
+                        "processors": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "default": "memory_limiter"
+                          },
+                          "default": [
+                            "memory_limiter",
+                            "batch"
+                          ]
+                        },
+                        "receivers": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "default": "otlp"
+                          },
+                          "default": [
+                            "otlp"
+                          ]
+                        }
+                      }
+                    },
+                    "metrics": {
+                      "type": "object",
+                      "properties": {
+                        "exporters": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "default": "debug"
+                          },
+                          "default": [
+                            "debug"
+                          ]
+                        },
+                        "processors": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "default": "memory_limiter"
+                          },
+                          "default": [
+                            "memory_limiter",
+                            "batch"
+                          ]
+                        },
+                        "receivers": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "default": "otlp"
+                          },
+                          "default": [
+                            "otlp",
+                            "prometheus"
+                          ]
+                        }
+                      }
+                    },
+                    "traces": {
+                      "type": "object",
+                      "properties": {
+                        "exporters": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "default": "debug"
+                          },
+                          "default": [
+                            "debug"
+                          ]
+                        },
+                        "processors": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "default": "memory_limiter"
+                          },
+                          "default": [
+                            "memory_limiter",
+                            "batch"
+                          ]
+                        },
+                        "receivers": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "default": "otlp"
+                          },
+                          "default": [
+                            "otlp",
+                            "jaeger",
+                            "zipkin"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "title": "Pipelines"
+                }
+              }
+            }
+          }
+        },
+        "ports": {
+          "type": "object",
+          "properties": {
+            "metrics": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean",
+                  "default": false,
+                  "title": "Expose collector metrics",
+                  "description": "Publishes the collector's internal telemetry so accepted and rejected data can be verified."
+                },
+                "servicePort": {
+                  "type": "integer",
+                  "default": 8888,
+                  "title": "Collector metrics port"
+                }
+              }
+            }
+          }
+        },
+        "serviceMonitor": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": false,
+              "title": "Create ServiceMonitor"
+            }
+          }
+        },
+        "resources": {
+          "type": "object",
+          "properties": {
+            "requests": {
+              "type": "object",
+              "title": "Requests",
+              "properties": {
+                "cpu": {
+                  "type": "string",
+                  "title": "CPU request",
+                  "pattern": "^([0-9]+(\\.[0-9]+)?([EPTGMK]i?|m)?|)$"
+                },
+                "memory": {
+                  "type": "string",
+                  "title": "Memory request",
+                  "pattern": "^([0-9]+(\\.[0-9]+)?([EPTGMK]i?|m)?|)$"
+                }
+              }
+            },
+            "limits": {
+              "type": "object",
+              "title": "Limits",
+              "properties": {
+                "cpu": {
+                  "type": "string",
+                  "title": "CPU limit",
+                  "pattern": "^([0-9]+(\\.[0-9]+)?([EPTGMK]i?|m)?|)$"
+                },
+                "memory": {
+                  "type": "string",
+                  "title": "Memory limit",
+                  "pattern": "^([0-9]+(\\.[0-9]+)?([EPTGMK]i?|m)?|)$"
+                }
+              }
+            }
+          },
+          "title": "Resources"
+        }
+      }
+    },
+    "presets": [
+      {
+        "id": "deployment",
+        "label": "Collector deployment",
+        "description": "Contrib collector running as a Deployment. Configure your receivers and exporter destinations before production use.",
+        "values": {
+          "mode": "deployment",
+          "image": {
+            "repository": "otel/opentelemetry-collector-contrib"
+          },
+          "command": {
+            "name": "otelcol-contrib"
+          }
+        }
+      }
+    ],
+    "defaultPreset": "deployment",
+    "namespace": "astronomer-opentelemetry"
+  }
+}

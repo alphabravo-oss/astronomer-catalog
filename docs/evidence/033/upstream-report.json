@@ -1,0 +1,215 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-10-12T20:51:02.043765+00:00",
+  "scope": "chart-version discovery only; security, EOL and application dependencies require review",
+  "applications": [
+    {
+      "application": "constellation",
+      "selected": "0.2.0",
+      "repository": "astronomer-first-party",
+      "chart": "constellation",
+      "status": "manual-review",
+      "reason": "first-party or non-HTTP Helm source"
+    },
+    {
+      "application": "kube-state-metrics",
+      "selected": "8.4.0",
+      "repository": "prometheus-community",
+      "chart": "kube-state-metrics",
+      "status": "update-available",
+      "latest": "8.6.0",
+      "selectedPresent": true,
+      "reason": ""
+    },
+    {
+      "application": "prometheus-node-exporter",
+      "selected": "4.56.1",
+      "repository": "prometheus-community",
+      "chart": "prometheus-node-exporter",
+      "status": "update-available",
+      "latest": "4.59.0",
+      "selectedPresent": true,
+      "reason": ""
+    },
+    {
+      "application": "metrics-server",
+      "selected": "3.14.0",
+      "repository": "metrics-server",
+      "chart": "metrics-server",
+      "status": "no-newer-stable",
+      "latest": "3.14.0",
+      "selectedPresent": true,
+      "reason": ""
+    },
+    {
+      "application": "kube-prometheus-stack",
+      "selected": "88.5.4",
+      "repository": "prometheus-community",
+      "chart": "kube-prometheus-stack",
+      "status": "update-available",
+      "latest": "92.3.0",
+      "selectedPresent": true,
+      "reason": ""
+    },
+    {
+      "application": "grafana",
+      "selected": "10.5.15",
+      "repository": "grafana",
+      "chart": "grafana",
+      "status": "no-newer-stable",
+      "latest": "10.5.15",
+      "selectedPresent": true,
+      "reason": ""
+    },
+    {
+      "application": "loki",
+      "selected": "7.3.0",
+      "repository": "grafana",
+      "chart": "loki",
+      "status": "no-newer-stable",
+      "latest": "7.3.0",
+      "selectedPresent": true,
+      "reason": ""
+    },
+    {
+      "application": "trivy-operator",
+      "selected": "0.36.0",
+      "repository": "aqua",
+      "chart": "trivy-operator",
+      "status": "update-available",
+      "latest": "0.37.0",
+      "selectedPresent": true,
+      "reason": ""
+    },
+    {
+      "application": "cert-manager",
+      "selected": "v1.21.1",
+      "repository": "jetstack",
+      "chart": "cert-manager",
+      "status": "update-available",
+      "latest": "v1.21.2",
+      "selectedPresent": true,
+      "reason": ""
+    },
+    {
+      "application": "ingress-nginx",
+      "selected": "4.15.1",
+      "repository": "ingress-nginx",
+      "chart": "ingress-nginx",
+      "status": "no-newer-stable",
+      "latest": "4.15.1",
+      "selectedPresent": true,
+      "reason": ""
+    },
+    {
+      "application": "external-secrets",
+      "selected": "2.9.0",
+      "repository": "external-secrets",
+      "chart": "external-secrets",
+      "status": "update-available",
+      "latest": "2.12.0",
+      "selectedPresent": true,
+      "reason": ""
+    },
+    {
+      "application": "kyverno",
+      "selected": "3.9.0",
+      "repository": "kyverno",
+      "chart": "kyverno",
+      "status": "update-available",
+      "latest": "3.9.1",
+      "selectedPresent": true,
+      "reason": ""
+    },
+    {
+      "application": "longhorn",
+      "selected": "1.12.1",
+      "repository": "longhorn",
+      "chart": "longhorn",
+      "status": "update-available",
+      "latest": "1.13.0",
+      "selectedPresent": true,
+      "reason": ""
+    },
+    {
+      "application": "gatekeeper",
+      "selected": "3.23.0",
+      "repository": "gatekeeper",
+      "chart": "gatekeeper",
+      "status": "update-available",
+      "latest": "3.23.1",
+      "selectedPresent": true,
+      "reason": ""
+    },
+    {
+      "application": "fluent-bit",
+      "selected": "0.58.1",
+      "repository": "fluent",
+      "chart": "fluent-bit",
+      "status": "update-available",
+      "latest": "0.58.3",
+      "selectedPresent": true,
+      "reason": ""
+    },
+    {
+      "application": "external-dns",
+      "selected": "1.21.1",
+      "repository": "external-dns",
+      "chart": "external-dns",
+      "status": "update-available",
+      "latest": "1.23.0",
+      "selectedPresent": true,
+      "reason": ""
+    },
+    {
+      "application": "velero",
+      "selected": "12.1.0",
+      "repository": "vmware-tanzu",
+      "chart": "velero",
+      "status": "update-available",
+      "latest": "12.2.1",
+      "selectedPresent": true,
+      "reason": ""
+    },
+    {
+      "application": "opentelemetry-collector",
+      "selected": "0.171.0",
+      "repository": "open-telemetry",
+      "chart": "opentelemetry-collector",
+      "status": "update-available",
+      "latest": "0.175.1",
+      "selectedPresent": true,
+      "reason": ""
+    },
+    {
+      "application": "tempo",
+      "selected": "1.24.4",
+      "repository": "grafana",
+      "chart": "tempo",
+      "status": "no-newer-stable",
+      "latest": "1.24.4",
+      "selectedPresent": true,
+      "reason": ""
+    },
+    {
+      "application": "keda",
+      "selected": "2.20.2",
+      "repository": "kedacore",
+      "chart": "keda",
+      "status": "update-available",
+      "latest": "2.21.0",
+      "selectedPresent": true,
+      "reason": ""
+    },
+    {
+      "application": "cloudnative-pg",
+      "selected": "0.29.0",
+      "repository": "cnpg",
+      "chart": "cloudnative-pg",
+      "status": "update-available",
+      "latest": "0.29.1",
+      "selectedPresent": true,
+      "reason": ""
+    }
+  ]
+}

@@ -1,0 +1,133 @@
+{
+  "version": "1.21.1",
+  "appVersion": "0.21.0",
+  "artifact": {
+    "type": "helm-http",
+    "repository": "external-dns",
+    "name": "external-dns",
+    "version": "1.21.1",
+    "digest": "sha256:5dd033a4b872bf641860695705ee460031d0bc695f114bf8926fee6736814e19"
+  },
+  "identities": {
+    "chartDigest": "sha256:5dd033a4b872bf641860695705ee460031d0bc695f114bf8926fee6736814e19"
+  },
+  "available": true,
+  "recommended": true,
+  "supportTier": "upstream",
+  "compatibility": {
+    "kubernetes": ">=1.31.0 <1.36.0"
+  },
+  "configuration": {
+    "schema": {
+      "type": "object",
+      "properties": {
+        "provider": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "default": "aws",
+              "title": "DNS provider"
+            }
+          }
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "default": "service"
+          },
+          "default": [
+            "service",
+            "ingress"
+          ],
+          "title": "Record sources"
+        },
+        "domainFilters": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "title": "Domain filters"
+        },
+        "txtOwnerId": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null,
+          "title": "TXT owner ID"
+        },
+        "interval": {
+          "type": "string",
+          "default": "1m",
+          "title": "Sync interval"
+        },
+        "policy": {
+          "type": "string",
+          "default": "upsert-only",
+          "title": "Record policy"
+        },
+        "serviceMonitor": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": false,
+              "title": "Create ServiceMonitor"
+            }
+          }
+        },
+        "resources": {
+          "type": "object",
+          "properties": {
+            "requests": {
+              "type": "object",
+              "title": "Requests",
+              "properties": {
+                "cpu": {
+                  "type": "string",
+                  "title": "CPU request",
+                  "pattern": "^([0-9]+(\\.[0-9]+)?([EPTGMK]i?|m)?|)$"
+                },
+                "memory": {
+                  "type": "string",
+                  "title": "Memory request",
+                  "pattern": "^([0-9]+(\\.[0-9]+)?([EPTGMK]i?|m)?|)$"
+                }
+              }
+            },
+            "limits": {
+              "type": "object",
+              "title": "Limits",
+              "properties": {
+                "cpu": {
+                  "type": "string",
+                  "title": "CPU limit",
+                  "pattern": "^([0-9]+(\\.[0-9]+)?([EPTGMK]i?|m)?|)$"
+                },
+                "memory": {
+                  "type": "string",
+                  "title": "Memory limit",
+                  "pattern": "^([0-9]+(\\.[0-9]+)?([EPTGMK]i?|m)?|)$"
+                }
+              }
+            }
+          },
+          "title": "Resources"
+        }
+      }
+    },
+    "presets": [
+      {
+        "id": "upstream",
+        "label": "Upstream defaults",
+        "description": "Start with the exact chart defaults; configure storage, exposure and secret references for your cluster.",
+        "values": {}
+      }
+    ],
+    "defaultPreset": "upstream",
+    "namespace": "astronomer-external-dns"
+  }
+}

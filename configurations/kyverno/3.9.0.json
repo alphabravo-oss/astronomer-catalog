@@ -1,0 +1,114 @@
+{
+  "version": "3.9.0",
+  "appVersion": "v1.19.0",
+  "artifact": {
+    "type": "helm-http",
+    "repository": "kyverno",
+    "name": "kyverno",
+    "version": "3.9.0",
+    "digest": "sha256:9663e8d3d15b070e5925b4f26b3f9a8824872a42ac7bf27ca105c897cb5aba51"
+  },
+  "identities": {
+    "chartDigest": "sha256:9663e8d3d15b070e5925b4f26b3f9a8824872a42ac7bf27ca105c897cb5aba51"
+  },
+  "available": true,
+  "recommended": true,
+  "supportTier": "upstream",
+  "compatibility": {
+    "kubernetes": ">=1.31.0 <1.36.0"
+  },
+  "configuration": {
+    "schema": {
+      "type": "object",
+      "properties": {
+        "admissionController": {
+          "type": "object",
+          "properties": {
+            "replicas": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "default": null,
+              "title": "Admission controller replicas"
+            },
+            "serviceMonitor": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean",
+                  "default": false,
+                  "title": "Create ServiceMonitor"
+                }
+              }
+            }
+          }
+        },
+        "backgroundController": {
+          "type": "object",
+          "properties": {
+            "replicas": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "default": null,
+              "title": "Background controller replicas"
+            }
+          }
+        },
+        "cleanupController": {
+          "type": "object",
+          "properties": {
+            "replicas": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "default": null,
+              "title": "Cleanup controller replicas"
+            }
+          }
+        },
+        "reportsController": {
+          "type": "object",
+          "properties": {
+            "replicas": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "default": null,
+              "title": "Reports controller replicas"
+            }
+          }
+        },
+        "features": {
+          "type": "object",
+          "properties": {
+            "policyReports": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean",
+                  "default": true,
+                  "title": "Policy reports"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "presets": [
+      {
+        "id": "upstream",
+        "label": "Upstream defaults",
+        "description": "Start with the exact chart defaults; configure storage, exposure and secret references for your cluster.",
+        "values": {}
+      }
+    ],
+    "defaultPreset": "upstream",
+    "namespace": "astronomer-kyverno"
+  }
+}

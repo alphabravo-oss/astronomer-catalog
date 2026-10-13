@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://astronomer.alphabravo.io/schemas/assurance-profile-v1.json",
+  "title": "Qualified application profile",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "profile",
+    "owner",
+    "chartVersion",
+    "chartDigest",
+    "valuesDigest",
+    "evidenceDigest",
+    "evidenceURL",
+    "qualifiedAt",
+    "supportUntil",
+    "images",
+    "environments",
+    "checks"
+  ],
+  "properties": {
+    "profile": {
+      "type": "string",
+      "minLength": 1
+    },
+    "owner": {
+      "type": "string",
+      "minLength": 1
+    },
+    "chartVersion": {
+      "type": "string",
+      "minLength": 1
+    },
+    "chartDigest": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "valuesDigest": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "evidenceDigest": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "evidenceURL": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://"
+    },
+    "qualifiedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "supportUntil": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "images": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^.+@sha256:[a-f0-9]{64}$"
+      }
+    },
+    "environments": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "checks": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "install",
+        "functional",
+        "upgrade",
+        "rollback",
+        "uninstall",
+        "security",
+        "isolation",
+        "airgap"
+      ],
+      "properties": {
+        "install": {
+          "const": "pass"
+        },
+        "functional": {
+          "const": "pass"
+        },
+        "upgrade": {
+          "const": "pass"
+        },
+        "uninstall": {
+          "const": "pass"
+        },
+        "security": {
+          "const": "pass"
+        },
+        "isolation": {
+          "const": "pass"
+        },
+        "airgap": {
+          "const": "pass"
+        },
+        "rollback": {
+          "enum": [
+            "pass",
+            "not-supported"
+          ]
+        }
+      }
+    }
+  }
+}

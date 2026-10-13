@@ -7,9 +7,10 @@ version. It does not vendor Rancher, Fleet, or third-party application source.
 Catalog metadata adds Astronomer presentation, compatibility, prerequisite,
 resource, storage, and lifecycle information around those upstream artifacts.
 
-The development index is [`catalog.json`](catalog.json). All entries are
-experimental until automated install, upgrade, rollback, uninstall, security,
-and air-gap qualification is enabled.
+The development index is [`catalog.json`](catalog.json). No entries currently carry an Assured commitment. Community entries retain
+upstream support responsibility; Experimental entries are for evaluation. A
+curated entry or signed catalog is not proof of application qualification.
+See [assurance and updates](docs/ASSURANCE.md) for the promotion contract.
 
 ## Validate
 

@@ -27,7 +27,8 @@ def validate_catalog(catalog: dict) -> list[str]:
     version_schema = load_json(ROOT / "schemas/catalog-entry-version-v1.schema.json")
     presentation_schema = load_json(ROOT / "schemas/presentation-v1.schema.json")
     registry = Registry()
-    for schema in (entry_schema, version_schema, presentation_schema):
+    assurance_schema = load_json(ROOT / "schemas/assurance-profile-v1.schema.json")
+    for schema in (entry_schema, version_schema, presentation_schema, assurance_schema):
         registry = registry.with_resource(
             schema["$id"], Resource.from_contents(schema)
         )

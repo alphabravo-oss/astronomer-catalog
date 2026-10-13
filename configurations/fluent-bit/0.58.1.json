@@ -1,0 +1,126 @@
+{
+  "version": "0.58.1",
+  "appVersion": "5.1.1",
+  "artifact": {
+    "type": "helm-http",
+    "repository": "fluent",
+    "name": "fluent-bit",
+    "version": "0.58.1",
+    "digest": "sha256:fc2235278cdb4e76befb8520464a66ff459c6d7711bbbc8755dedcc32799877b"
+  },
+  "identities": {
+    "chartDigest": "sha256:fc2235278cdb4e76befb8520464a66ff459c6d7711bbbc8755dedcc32799877b"
+  },
+  "available": true,
+  "recommended": true,
+  "supportTier": "upstream",
+  "compatibility": {
+    "kubernetes": ">=1.31.0 <1.36.0"
+  },
+  "configuration": {
+    "schema": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "default": "DaemonSet",
+          "title": "Workload type"
+        },
+        "replicaCount": {
+          "type": "integer",
+          "default": 1,
+          "title": "Deployment replicas",
+          "minimum": 0
+        },
+        "logLevel": {
+          "type": "string",
+          "default": "info",
+          "title": "Log level"
+        },
+        "flush": {
+          "type": "integer",
+          "default": 1,
+          "title": "Flush interval"
+        },
+        "config": {
+          "type": "object",
+          "properties": {
+            "inputs": {
+              "type": "string",
+              "default": "[INPUT]\n    Name tail\n    Path /var/log/containers/*.log\n    multiline.parser docker, cri\n    Tag kube.*\n    Mem_Buf_Limit 5MB\n    Skip_Long_Lines On\n\n[INPUT]\n    Name systemd\n    Tag host.*\n    Systemd_Filter _SYSTEMD_UNIT=kubelet.service\n    Read_From_Tail On\n",
+              "title": "Inputs"
+            },
+            "filters": {
+              "type": "string",
+              "default": "[FILTER]\n    Name kubernetes\n    Match kube.*\n    Merge_Log On\n    Keep_Log Off\n    K8S-Logging.Parser On\n    K8S-Logging.Exclude On\n",
+              "title": "Filters"
+            },
+            "outputs": {
+              "type": "string",
+              "default": "[OUTPUT]\n    Name es\n    Match kube.*\n    Host elasticsearch-master\n    Logstash_Format On\n    Retry_Limit False\n\n[OUTPUT]\n    Name es\n    Match host.*\n    Host elasticsearch-master\n    Logstash_Format On\n    Logstash_Prefix node\n    Retry_Limit False\n",
+              "title": "Outputs"
+            }
+          }
+        },
+        "serviceMonitor": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": false,
+              "title": "Create ServiceMonitor"
+            }
+          }
+        },
+        "resources": {
+          "type": "object",
+          "properties": {
+            "requests": {
+              "type": "object",
+              "title": "Requests",
+              "properties": {
+                "cpu": {
+                  "type": "string",
+                  "title": "CPU request",
+                  "pattern": "^([0-9]+(\\.[0-9]+)?([EPTGMK]i?|m)?|)$"
+                },
+                "memory": {
+                  "type": "string",
+                  "title": "Memory request",
+                  "pattern": "^([0-9]+(\\.[0-9]+)?([EPTGMK]i?|m)?|)$"
+                }
+              }
+            },
+            "limits": {
+              "type": "object",
+              "title": "Limits",
+              "properties": {
+                "cpu": {
+                  "type": "string",
+                  "title": "CPU limit",
+                  "pattern": "^([0-9]+(\\.[0-9]+)?([EPTGMK]i?|m)?|)$"
+                },
+                "memory": {
+                  "type": "string",
+                  "title": "Memory limit",
+                  "pattern": "^([0-9]+(\\.[0-9]+)?([EPTGMK]i?|m)?|)$"
+                }
+              }
+            }
+          },
+          "title": "Resources"
+        }
+      }
+    },
+    "presets": [
+      {
+        "id": "upstream",
+        "label": "Upstream defaults",
+        "description": "Start with the exact chart defaults; configure storage, exposure and secret references for your cluster.",
+        "values": {}
+      }
+    ],
+    "defaultPreset": "upstream",
+    "namespace": "astronomer-logging"
+  }
+}

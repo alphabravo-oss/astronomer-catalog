@@ -11,6 +11,8 @@ import shutil
 import sys
 from typing import Any
 
+from assurance import validate_assurance
+from configuration import attach_configurations
 from resolve_artifacts import validate_lock
 from validate_schema import ROOT, load_json, validate_catalog, validate_revocations
 
@@ -61,6 +63,10 @@ def build_document() -> tuple[dict, dict]:
     lock_errors = validate_lock(artifact_lock, catalog=catalog)
     if lock_errors:
         raise ValueError("artifact lock validation failed before generation")
+    assurance_errors = validate_assurance(catalog, artifact_lock, ROOT)
+    if assurance_errors:
+        raise ValueError("assurance validation failed: " + "; ".join(assurance_errors))
+    attach_configurations(catalog, ROOT, artifact_lock)
     locked_artifacts = artifact_lock["entries"]
     catalog["repositories"] = sorted(catalog["repositories"], key=lambda row: row["name"])
     catalog["applications"] = sorted(catalog["applications"], key=lambda row: row["slug"])

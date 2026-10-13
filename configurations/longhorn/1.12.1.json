@@ -1,0 +1,137 @@
+{
+  "version": "1.12.1",
+  "appVersion": "v1.12.1",
+  "artifact": {
+    "type": "helm-http",
+    "repository": "longhorn",
+    "name": "longhorn",
+    "version": "1.12.1",
+    "digest": "sha256:c8cf4b35a9d872cd5f7e44fd26d8e6ac7c2abaee42f4e2f2a0b0ebbc6e3a6116"
+  },
+  "identities": {
+    "chartDigest": "sha256:c8cf4b35a9d872cd5f7e44fd26d8e6ac7c2abaee42f4e2f2a0b0ebbc6e3a6116"
+  },
+  "available": true,
+  "recommended": true,
+  "supportTier": "upstream",
+  "compatibility": {
+    "kubernetes": ">=1.31.0 <1.36.0"
+  },
+  "releaseNotes": "Archive verified against the upstream release asset, Helm index and release source commit. Community support; no Astronomer live assurance. See docs/evidence/035/longhorn-review.json.",
+  "configuration": {
+    "schema": {
+      "type": "object",
+      "properties": {
+        "persistence": {
+          "type": "object",
+          "properties": {
+            "defaultClass": {
+              "type": "boolean",
+              "title": "Default StorageClass",
+              "default": true
+            },
+            "defaultClassReplicaCount": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 20,
+              "title": "Replicas per volume",
+              "default": 3
+            },
+            "reclaimPolicy": {
+              "type": "string",
+              "enum": [
+                "Delete",
+                "Retain"
+              ],
+              "title": "Reclaim policy",
+              "default": "Delete"
+            }
+          }
+        },
+        "defaultSettings": {
+          "type": "object",
+          "properties": {
+            "defaultDataPath": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "description": "Dedicated host data path. Nodes must satisfy Longhorn host prerequisites; changing this field does not prepare their disks.",
+              "title": "Default data path",
+              "default": null
+            }
+          }
+        },
+        "longhornUI": {
+          "type": "object",
+          "properties": {
+            "replicas": {
+              "type": "integer",
+              "minimum": 1,
+              "title": "UI replicas",
+              "default": 2
+            }
+          }
+        },
+        "ingress": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "title": "Enable Ingress",
+              "default": false
+            },
+            "host": {
+              "type": "string",
+              "title": "Ingress host",
+              "default": "sslip.io"
+            }
+          }
+        },
+        "metrics": {
+          "type": "object",
+          "properties": {
+            "serviceMonitor": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean",
+                  "title": "Create ServiceMonitor",
+                  "default": false
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "namespace": "longhorn-system",
+    "defaultPreset": "replicated",
+    "presets": [
+      {
+        "id": "replicated",
+        "label": "Three-replica storage",
+        "description": "Requires at least three eligible prepared nodes. Keeps existing default StorageClasses and retains released volumes. Review disk capacity and host prerequisites.",
+        "values": {
+          "persistence": {
+            "defaultClass": false,
+            "defaultClassReplicaCount": 3,
+            "reclaimPolicy": "Retain"
+          }
+        }
+      },
+      {
+        "id": "evaluation",
+        "label": "Single-node evaluation",
+        "description": "One volume replica provides no node-failure redundancy. Keeps existing default StorageClasses and retains released volumes.",
+        "values": {
+          "persistence": {
+            "defaultClass": false,
+            "defaultClassReplicaCount": 1,
+            "reclaimPolicy": "Retain"
+          }
+        }
+      }
+    ]
+  }
+}

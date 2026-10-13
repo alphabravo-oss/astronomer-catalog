@@ -1,0 +1,101 @@
+{
+  "version": "3.23.0",
+  "appVersion": "v3.23.0",
+  "artifact": {
+    "type": "helm-http",
+    "repository": "gatekeeper",
+    "name": "gatekeeper",
+    "version": "3.23.0",
+    "digest": "sha256:33f018bca8b875a9e01f447efef09414609d0d38185101207a4a6d655fe3d2a0"
+  },
+  "identities": {
+    "chartDigest": "sha256:33f018bca8b875a9e01f447efef09414609d0d38185101207a4a6d655fe3d2a0"
+  },
+  "available": true,
+  "recommended": true,
+  "supportTier": "upstream",
+  "compatibility": {
+    "kubernetes": ">=1.31.0 <1.36.0"
+  },
+  "configuration": {
+    "schema": {
+      "type": "object",
+      "properties": {
+        "replicas": {
+          "type": "integer",
+          "default": 3,
+          "title": "Controller replicas",
+          "minimum": 0
+        },
+        "auditInterval": {
+          "type": "integer",
+          "default": 60,
+          "title": "Audit interval"
+        },
+        "constraintViolationsLimit": {
+          "type": "integer",
+          "default": 20,
+          "title": "Violations retained per constraint"
+        },
+        "enableExternalData": {
+          "type": "boolean",
+          "default": true,
+          "title": "Enable external data"
+        },
+        "controllerManager": {
+          "type": "object",
+          "properties": {
+            "resources": {
+              "type": "object",
+              "properties": {
+                "requests": {
+                  "type": "object",
+                  "title": "Requests",
+                  "properties": {
+                    "cpu": {
+                      "type": "string",
+                      "title": "CPU request",
+                      "pattern": "^([0-9]+(\\.[0-9]+)?([EPTGMK]i?|m)?|)$"
+                    },
+                    "memory": {
+                      "type": "string",
+                      "title": "Memory request",
+                      "pattern": "^([0-9]+(\\.[0-9]+)?([EPTGMK]i?|m)?|)$"
+                    }
+                  }
+                },
+                "limits": {
+                  "type": "object",
+                  "title": "Limits",
+                  "properties": {
+                    "cpu": {
+                      "type": "string",
+                      "title": "CPU limit",
+                      "pattern": "^([0-9]+(\\.[0-9]+)?([EPTGMK]i?|m)?|)$"
+                    },
+                    "memory": {
+                      "type": "string",
+                      "title": "Memory limit",
+                      "pattern": "^([0-9]+(\\.[0-9]+)?([EPTGMK]i?|m)?|)$"
+                    }
+                  }
+                }
+              },
+              "title": "Controller resources"
+            }
+          }
+        }
+      }
+    },
+    "presets": [
+      {
+        "id": "upstream",
+        "label": "Upstream defaults",
+        "description": "Start with the exact chart defaults; configure storage, exposure and secret references for your cluster.",
+        "values": {}
+      }
+    ],
+    "defaultPreset": "upstream",
+    "namespace": "astronomer-gatekeeper-system"
+  }
+}
